@@ -1,7 +1,7 @@
 # hasana-chatbot
 line chatbot with service susi.ai
 
-#how to use
+# how to use
 
 1. register to https://developers.line.me then create new provider and channel bot
 
@@ -25,7 +25,7 @@ https://glitch.com/edit/#!/hasana
 
 
 
-#resource
+# resource
 https://github.com/weather-bot/WxKitty
 https://github.com/ArnoldQIU/StockpythonLinebot py
 https://github.com/Galadrielz/Inori-LineBot py

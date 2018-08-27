@@ -14,7 +14,6 @@ host it on node server like glitch, now or heroku
 
 ![](https://cdn.glitch.com/c5a59a6d-d584-4da5-af22-51ba2b6a1779%2FScreenshot%20(115).png)
 
-# demo ? please scan it
+# demo > scan
 
 ![](https://qr-official.line.me/M/Um3peEBCk2.png)
-

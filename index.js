@@ -4,6 +4,7 @@ const line = require('@line/bot-sdk');
 const express = require('express');
 var request = require('request');
 var http = require('http');
+var con = require('./config.js');
 
 // create LINE SDK config from env variables
 const config = {

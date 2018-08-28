@@ -2,8 +2,11 @@
 
 const line = require('@line/bot-sdk');
 const express = require('express');
+var xray = require('x-ray');
 var request = require('request');
 var http = require('http');
+
+var s = require('./scrape');
 
 // create LINE SDK config from env variables
 const config = {
@@ -17,6 +20,7 @@ const client = new line.Client(config);
 // create Express app
 // about Express itself: https://expressjs.com/
 const app = express();
+var x=xray();
 
 // register a webhook handler with middleware
 app.post('/webhook', line.middleware(config), (req, res) => {
@@ -30,12 +34,19 @@ app.post('/webhook', line.middleware(config), (req, res) => {
 });
 
 
+// router
 
-setInterval(function() {
-        http.get(process.env.URL);
-    }, 600000); // every 10 minutes
+app.get('/nime', function (req, res) {
+  s.nime(res);
+})
+
+app.get('/nime/recom', function (req, res) {
+  s.recom(res);
+})
 
 
+
+//
 // event handler
 function handleEvent(event) {
     if (event.type !== 'message' || event.message.type !== 'text') {
@@ -51,8 +62,8 @@ function handleEvent(event) {
             q: event.message.text
         }
     };
-    
-  if (event.message.text.toLowerCase() === "who febrian?" || event.message.text.toLowerCase() === "Who febrian?"){
+  
+  if (event.message.text.toLowerCase() === "who febrian dwi putra"){
         const answer = {
           "type": "template",
           "altText": "Febrian Dwi Putra is humble people with skill programing and design",
@@ -112,7 +123,7 @@ function handleEvent(event) {
         };
         return client.replyMessage(event.replyToken, [answer,answer1]);
     
-    } else if (event.message.text.toLowerCase() === "") {
+    } else if (event.message.text.toLowerCase() === "ahhh") {
         request(options1, function(error1, response1, body1) {
             if (error1) throw new Error(error1);
 
@@ -126,7 +137,8 @@ function handleEvent(event) {
             return client.replyMessage(event.replyToken, sampleQ);
         });
     } else {
-        request(options1, function(error1, response1, body1) {
+
+            request(options1, function(error1, response1, body1) {
             if (error1) throw new Error(error1);
             // answer fetched from api susi
             var type = (JSON.parse(body1)).answers[0].actions;

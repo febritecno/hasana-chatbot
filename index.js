@@ -44,6 +44,15 @@ app.get('/nime/recom', function (req, res) {
   s.recom(res);
 })
 
+app.get('/free', function (req, res) {
+  s.free(res);
+})
+
+app.get('/diskon', function (req, res) {
+  s.diskon(res);
+})
+
+
 
 
 //

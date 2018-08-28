@@ -108,9 +108,9 @@ var diskon = (cape) => {
     coupon:'.link-holder a@href'
 
   }])
-  //.paginate('.pagination a@href')
+  .paginate('.paging a@href')
   
-  //.limit(1)
+  .limit(5)
   
   .stream()
 

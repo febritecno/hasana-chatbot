@@ -36,20 +36,39 @@ app.post('/webhook', line.middleware(config), (req, res) => {
 
 // router
 
-app.get('/nime', function (req, res) {
-  s.nime(res);
+app.get('/nime',async function (req, res) {
+  await s.nime(res,10);
 })
 
-app.get('/nime/recom', function (req, res) {
-  s.recom(res);
+app.get('/recom',async function (req, res) {
+  await s.recom(res,10);
 })
 
-app.get('/free', function (req, res) {
-  s.free(res);
+app.get('/free',async function (req, res) {
+  await s.free(res,10);
 })
 
-app.get('/diskon', function (req, res) {
-  s.diskon(res);
+app.get('/diskon',async function (req, res) {
+  
+  function isNumber(n) {  return !isNaN(parseFloat(n)) && !isNaN(n - 0) }
+  
+        app.get('/diskon/:num',async function(req,res){
+          
+          var display = await req.params.num; //untuk manipulasi parameter num
+
+              if (await isNumber(display) !== true){
+
+                  res.json({status: '200',message: 'use number for paramater to show data example /diskon/1',code: 'error'});
+
+              }else{
+               
+                await s.diskon(res,display);
+             
+              }
+
+    })
+  
+  await s.diskon(res,10);
 })
 
 
@@ -71,6 +90,45 @@ function handleEvent(event) {
             q: event.message.text
         }
     };
+  
+  switch(event.message.text.toLowerCase()) {
+    case "popular anime":
+    const answer = {
+          "type": "template",
+          "altText": "silid Dwi Putra is humble people with skill programing and design",
+          "template": {
+            "type": "buttons",
+            "actions": [
+              {
+                "type": "uri",
+                "label": "Facebook",
+                "uri": "https://www.facebook.com/febri.krn"
+              },
+              {
+                "type": "uri",
+                "label": "Linkedin",
+                "uri": "https://www.linkedin.com/in/febrian-dwi-putra-026446163"
+              },
+              { "type": "uri",
+                "label": "Github",
+                "uri": "https://github.com/febritecno"
+              }
+            ],
+            "thumbnailImageUrl": "https://avatars2.githubusercontent.com/u/9696688?s=460&v=4",
+            "title": "Febrian Dwi Putra",
+            "text": "dawdwadawdawdawdawda"
+          }
+        };
+        return client.replyMessage(event.replyToken, answer);
+        
+        break;
+    case "coupon udemy":
+        
+        break;
+    default:
+        
+}
+  
   
   if (event.message.text.toLowerCase() === "who febrian dwi putra"){
         const answer = {

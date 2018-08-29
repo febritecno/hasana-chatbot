@@ -4,6 +4,48 @@
 =========================  
   javascript cheetsheet
   
+  
+  
+  
+  
+  
+  
+  api json itu cuma resultnya jadi json
+  
+  komunikasinya pada respon dan request pada url. ibarat tombol"nya pada web
+  
+  endpoint api di bedakan pada endpoint controller/raouter lain
+  
+  hasil resultnya layer ada banyak tinggal pilih mau apa.
+  
+  xml,json,html,xhtml,csv, dll.
+  
+  
+  state managent -> penyentralan perubahan, komunikasi antar komponen, penyimpanan perubahan.
+  
+  belajar redux
+  ------
+  
+  dalam store ada beberapa
+  
+  action -> sama kayak controller
+  reducer -> sama kayak model
+  state -> handle kondisi
+  props -> handle propertis
+  component -> ya sama kayak view
+  - dump component = berisi presentasi saja. tampilan tok
+  - smart component /container = berisi logic dan penyatuan dump component. redux taruh sini
+  
+  
+  belajar vuex MVVM
+  ------------
+  action 
+  mutation - perubahan
+  state - kondisi
+  getter - presentasi/impelement
+  
+  
+  
   for (anu in anus){}
   
   let,var,const = konsiten nilai gk bisa di ubah

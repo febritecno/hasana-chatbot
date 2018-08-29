@@ -1,39 +1,15 @@
-
+ /** 
   
-  /** 
-  
-  
-  Ant Design by Ant Financial
-Atlaskit by Atlassian
-Blueprint by Palantir
-Canvas by Hubspot
-Carbon Design System by IBM
-Garden by Zendesk
-Grommet by Hewlett Packard
-Lightning Design System by Salesforce
-Material UI by Google
-Mineral UI by CA Technologies
-Pivotal UI by Pivotal
-Plasma by WeWork
-Polaris by Shopify
-Ring UI by JetBrains
-Swarm Design System by Meetup
-  
-  
-  https://en.wikipedia.org/wiki/Naming_convention_(programming) penulisan pada bahasa pemprograman
-  Uppercase
-  lowerCase
-  lowerCamelCase
-  CamelCase
-  UpperCamelCase
-  lowercase_separated_by_underscores
-  CAPITALIZED_WITH_UNDERSCORES
-  _dwdaw
-  
-  
+ 
   
   NOTE
+ 
+ 
+ 001 riset
+
+cari payload parameter dibutuhkan,cari referensi tool pendukung.cari algoritma yg ada.
   
+ 
   modal kekuatan ku sebenarnya adalah belajar dari source code orang lain pada repo orang lain terus praktek atau edit". + belajar referance keyword di dokumentasi bahasa pemprograman.
   
   baru skip  skip video, ebook.
@@ -44,283 +20,6 @@ Swarm Design System by Meetup
   yang sudah ada. untuk mempercepat bikin algoritma yang baru atau menyelesaikan masalah. sebagai referensi untuk buat alur program.
   
   
-  
-  ===
-  php all cbout chain
-  
-  $this->anu->modul();
-  anu::modul()
-  
-  interface anu impelements anu2{
-  
-  class 1
-  class 2
-  clas 2
-  }
-  
-  __constructor{
-  parents::__constructor;
-  }
-  
-  function anu(nim) {
-  $nim = data*nim;
-  return data
-  break
-  continou
-  }
-  
-  echo ""; // Print a string or type that can be made into a string(I.E int, float).
-print_r($arr); // Print anything, with type hints for array's and object's
-var_dump($arr); // Print anything, with type hints for any value and sizes
-
-
-$_SERVER; // SERVER variables = req.params
-$_GET; // Query params  = req.query
-$_POST; // Post fields = app.post
-$_REQUEST; // GET and POST together
-$GLOBALS; // Array of global variables
-$_SESSION; // Browser session
-$_FILES; // Array of files that are sent in request
-$_COOKIE; // Array of cookies sent in request
-$_ENV; // php.ini options
-$argv; // Array of terminal arguments (filename included)
-$argc; // Number of arguments passed into terminal
-
-  static , public,private
-  
-  
-  switch(anu>0) {
-  
-  case '1' :
-  
-  break
-  
-  default :
-  
-  }
-  
-  use \anu\d\Ras
-  
-  namespace \da\da\Folder
-  ---
-  
-  class NormalClass extends AbstractClassName implements InterfaceName
-{}
-
-public $anu
-private $anu
-
-static $anu
-
-public function ada(num=0){}
-
-abstract class AbstractClassName{}
-
-  for(i;i>0;i++){}
-  
-  while($anu>0){
-  i++
-  }
-  
-  do{i++} while(i>0){}
-  
-  
-  
-  ===========
-  
-  javascript cheetsheet
-  
-  var anus = {'anu': [{'na':na}],'nu':nu} 
-  
-  for (anu in anus){}
-  
-  let,var,const
-  
-  = equal
-  == comparison bisa berubah nilai
-  === comparison tidak bisa di ubah nilai. result true and false or type data
-  
-  referanceError,syataxError,TypeError
-  
-  
-  ES 5 
-  
-  The "use strict" Directive
-String.trim()
-Array.isArray()
-Array.forEach()
-Array.map()
-Array.filter()
-Array.reduce()
-Array.reduceRight()
-Array.every()
-Array.some()
-Array.indexOf()
-Array.lastIndexOf()
-JSON.parse()
-JSON.stringify()
-Date.now()
-Property Getters and Setters
-New Object Property Methods
-
-es 6
-
-JavaScript let
-JavaScript const
-JavaScript default parameter values
-Array.find()
-Array.findIndex()
-
-
-object property method keyword ====
-
-Array	Date	eval	function
-hasOwnProperty	Infinity	isFinite	isNaN
-isPrototypeOf	length	Math	NaN
-name	Number	Object	prototype
-String	toString	undefined	valueOf
-
-other keyword
-
-alert	all	anchor	anchors
-area	assign	blur	button
-checkbox	clearInterval	clearTimeout	clientInformation
-close	closed	confirm	constructor
-crypto	decodeURI	decodeURIComponent	defaultStatus
-document	element	elements	embed
-embeds	encodeURI	encodeURIComponent	escape
-event	fileUpload	focus	form
-forms	frame	innerHeight	innerWidth
-layer	layers	link	location
-mimeTypes	navigate	navigator	frames
-frameRate	hidden	history	image
-images	offscreenBuffering	open	opener
-option	outerHeight	outerWidth	packages
-pageXOffset	pageYOffset	parent	parseFloat
-parseInt	password	pkcs11	plugin
-prompt	propertyIsEnum	radio	reset
-screenX	screenY	scroll	secure
-select	self	setInterval	setTimeout
-status	submit	taint	text
-textarea	top	unescape	untaint
-window			
-
-html heandel keyword
-onblur	onclick	onerror	onfocus
-onkeydown	onkeypress	onkeyup	onmouseover
-onload	onmouseup	onmousedown	onsubmit
-
-
-JSON.parse = object to string
-
-JSON.stringify = string to object JSON
-
-manipulasi array pakai method/funsi ==
-
-toString() join() , Popping and Pushing, Shifting Elements, Changing Elements, Splicing an Array, Merging (Concatenating) Arrays, Automatic toString()
-Finding Max and Min Values
-==
-    
-  
-  module.exports = {funsi a,b,c}
-  
-  import {a,b,c} from anu
-  
-  
-  function (paramenter){
-  var data= data*parameter
-  
-  return data
-  } 
-  
-  try{} catch{} finally{} throw{}
-  
-  promise(function(resolve,reject){
-  })then({}).catch({})
-  
-  instance of
-  
-  
-  , ()=>{} , var anu = function(){} 
-  
-  data stuktur javascript about data
-  
-  ['febri','dono'] array , object {'nama':febri,'kelas':rpl} , variable let anu,const anu,var anu
-  
-  async await
-  async function cucimuka (muka) {
-  let cuci = '';
-  var sabun = await sabun(()=>{
-  get(muka)**
-  }),'20 detik');
-  
-  Promise.all(map((sabun)=>{
-  cuci * 3 + 3
-  })).catch((error)=>{
-  console.log(error);
-  })
-  return cuci
-  }
-  
-  
-  
-  for(i;i>0;i++){}
-  
-  while(i>0)){
-  i++
-  }
-  
-  do{
-  i++
-  }
-  while(i>0
-  
-  setter dan getter
-  
-  {
-  anu : (x) => x*2; 
-  }
-  
-  
-  super() untuk load fungsi di parent
-  
-  class child extends parent {}
-  
-  construct sama kayak __init__ python
-  
-  
-  
-  
-  Map =looping kayak foreach, filter = filter object dan array, reduce = manupulasi object dan array
-  
-  forEach looping
-  
-   Immutable.js,lodash  = buat manipulasi object dan array)
-  
-  
-  
-  ==belajar object
-  
-  
-car= {}
-  
-x = car.cars[0]; select object di kode, 
-
-car.mundur(),car.maju()
-
-var car = {'name': fiat,
-'model':500,
-'weight':850kg,
-'color':white} 
-->
-  car.name = Fiat
-car.model = 500
-car.weight = 850kg
-car.color = white
-
-
-=======
-
 bahasa pemprogram cuma main if,loop,manipulasi object, membuat modul -> class atau interface, membuat metode -> function()
 
 bahan jadi untuk di akses function() kayak open(para1,para2,para3,[],[{}],{},()=>{}), dll sama class
@@ -418,7 +117,52 @@ permasalahan pada promise saat menggunakan try catch kita tidak bisa menggunakan
     
     pilih .anu a@href . 
     
-    @ digunakan untuk selector atribut pada elemen**/
+    @ digunakan untuk selector atribut pada elemen
+    
+    
+    
+    
+     react style 2018
+  
+Ant Design by Ant Financial
+Atlaskit by Atlassian
+Blueprint by Palantir
+Canvas by Hubspot
+Carbon Design System by IBM
+Garden by Zendesk
+Grommet by Hewlett Packard
+Lightning Design System by Salesforce
+Material UI by Google
+Mineral UI by CA Technologies
+Pivotal UI by Pivotal
+Plasma by WeWork
+Polaris by Shopify
+Ring UI by JetBrains
+Swarm Design System by Meetup
+  
+
+
+1
+  
+  https://en.wikipedia.org/wiki/Naming_convention_(programming) penulisan pada bahasa pemprograman
+  Uppercase
+  lowerCase
+  lowerCamelCase
+  CamelCase
+  UpperCamelCase
+  lowercase_separated_by_underscores
+  CAPITALIZED_WITH_UNDERSCORES
+  _dwdaw
+  
+  
+    
+    
+    
+    **/
+
+
+
+
 
 
 

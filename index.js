@@ -40,20 +40,12 @@ app.post('/webhook', line.middleware(config), (req, res) => {
 
 
 
-// router
+// Function router
 
 
 var addmore = async (url) => {
   
-    
-
-}
-
-app.get('/nime',async function (req, res) {
-  await s.nime(res,10);
-})
-
-app.get('/nime/:num',async function(req,res){
+  app.get(url+'/:num',async function(req,res){
    
    function isNumber(n) {  return !isNaN(parseFloat(n)) && !isNaN(n - 0) }
    
@@ -61,7 +53,7 @@ app.get('/nime/:num',async function(req,res){
 
     if (await isNumber(display) !== true){
 
-        res.json({status: '200',message: 'use number for paramater to show data example /diskon/1',code: 'error'});
+        res.json({status: '200',message: 'use number for paramater to show data example /${url}/1',code: 'error'});
 
     }else{
 
@@ -70,7 +62,15 @@ app.get('/nime/:num',async function(req,res){
     }
 
 })
+  
+  return url
 
+}
+
+// router
+app.get('/nime',async function (req, res) {
+  await s.nime(res,10);
+})
 
 app.get('/recom',async function (req, res) {
   await s.recom(res,10);
@@ -81,32 +81,19 @@ app.get('/free',async function (req, res) {
 })
 
 app.get('/diskon',async function (req, res) {
-  
   await s.diskon(res,10);
 })
 
-app.get('/diskon/:num',async function(req,res){
-   
-   function isNumber(n) {  return !isNaN(parseFloat(n)) && !isNaN(n - 0) }
-   
-    var display = await req.params.num; //untuk manipulasi parameter num
-
-    if (await isNumber(display) !== true){
-
-        res.json({status: '200',message: 'use number for paramater to show data example /diskon/1',code: 'error'});
-
-    }else{
-
-        await s.diskon(res,display);
-
-    }
-
-})
-
-
-
+addmore('/nime');
+addmore('/recom');
+addmore('/free');
+addmore('/diskon');
 
 //
+
+
+
+
 // event handler
 function handleEvent(event) {
     if (event.type !== 'message' || event.message.type !== 'text') {

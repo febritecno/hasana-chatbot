@@ -5,6 +5,7 @@ const express = require('express');
 var xray = require('x-ray');
 var request = require('request');
 var http = require('http');
+var apicache = require('apicache');
 
 var s = require('./scrape');
 
@@ -21,6 +22,9 @@ const client = new line.Client(config);
 // about Express itself: https://expressjs.com/
 const app = express();
 var x=xray();
+var c=apicache.middleware('1 hour');
+
+app.use(c);
 
 // register a webhook handler with middleware
 app.post('/webhook', line.middleware(config), (req, res) => {
@@ -34,11 +38,39 @@ app.post('/webhook', line.middleware(config), (req, res) => {
 });
 
 
+
+
 // router
+
+
+var addmore = async (url) => {
+  
+    
+
+}
 
 app.get('/nime',async function (req, res) {
   await s.nime(res,10);
 })
+
+app.get('/nime/:num',async function(req,res){
+   
+   function isNumber(n) {  return !isNaN(parseFloat(n)) && !isNaN(n - 0) }
+   
+    var display = await req.params.num; //untuk manipulasi parameter num
+
+    if (await isNumber(display) !== true){
+
+        res.json({status: '200',message: 'use number for paramater to show data example /diskon/1',code: 'error'});
+
+    }else{
+
+        await s.diskon(res,display);
+
+    }
+
+})
+
 
 app.get('/recom',async function (req, res) {
   await s.recom(res,10);

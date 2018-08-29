@@ -1,5 +1,6 @@
 dependencies:
   '@line/bot-sdk': 1.1.0
+  apicache: 1.2.3
   cron-scheduler: 1.2.0
   express: 4.16.3
   request: 2.88.0
@@ -91,6 +92,12 @@ packages:
     dev: false
     resolution:
       integrity: sha1-gwtoCqflbzNFHUsEnzvYBESY7ic=
+  /apicache/1.2.3:
+    dev: false
+    engines:
+      node: '>=4.0.0'
+    resolution:
+      integrity: sha512-w4FpqHII+hi34Ujwbj6Pgkm3NHBmVZp8JiBmyedz5Qcq/HKqLi5rqYo7Tc/9QtWEPiP1cTxd026V/ZS02/sTXA==
   /array-flatten/1.1.1:
     dev: false
     resolution:
@@ -1601,6 +1608,7 @@ shrinkwrapMinorVersion: 8
 shrinkwrapVersion: 3
 specifiers:
   '@line/bot-sdk': ^1.0.0
+  apicache: ^1.2.3
   cron-scheduler: ^1.1.0
   express: ^4.15.2
   request: ^2.81.0

@@ -8,7 +8,8 @@
     "express": "^4.15.2",
     "request": "^2.81.0",
     "cron-scheduler": "^1.1.0",
-    "x-ray": "^2.3.3"
+    "x-ray": "^2.3.3",
+    "apicache": "^1.2.3"
   },
   "scripts": {
     "start": "node index.js"

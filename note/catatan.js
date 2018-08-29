@@ -1,6 +1,22 @@
 
   
-  /** cara menselector selector pertama/seluruh selector elemen yang punya identisas sama bukan paling atas pada target ya !! 
+  /** 
+  
+  NOTE
+  
+  kekuatan ku sebenarnya adalah belajar dari source code orang lain. + belajar referance keyword di dokumentasi bahasa pemprograman.
+  
+  baru skip  skip video, ebook.
+  
+  
+  
+  belajar algoritma itu penting, bukan belajar algoritma ya. maksudnya belajar algoritma itu belajar algoritma
+  yang sudah ada. untuk mempercepat bikin algoritma yang baru atau menyelesaikan masalah. sebagai referensi untuk buat alur program.
+  
+  
+  
+  
+  cara menselector selector pertama/seluruh selector elemen yang punya identisas sama bukan paling atas pada target ya !! 
   contoh disini adalah class .coupon yaitu identitas yg sama pada seluruh komponen yang mau kita ambil. misal
    
   mau ambil data link html ketiga ini
@@ -92,9 +108,7 @@ permasalahan pada promise saat menggunakan try catch kita tidak bisa menggunakan
   https://developer.mozilla.org/en-US/docs/Web/JavaScript/
   
   
-  
-  
-  
+
    https://www.udemy.com/user/bina-nusantara-university/?key=taught_courses&taught_courses=4
   
   https://devhints.io/

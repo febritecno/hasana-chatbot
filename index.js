@@ -50,25 +50,25 @@ app.get('/free',async function (req, res) {
 
 app.get('/diskon',async function (req, res) {
   
-  function isNumber(n) {  return !isNaN(parseFloat(n)) && !isNaN(n - 0) }
-  
-        app.get('/diskon/:num',async function(req,res){
-          
-          var display = await req.params.num; //untuk manipulasi parameter num
-
-              if (await isNumber(display) !== true){
-
-                  res.json({status: '200',message: 'use number for paramater to show data example /diskon/1',code: 'error'});
-
-              }else{
-               
-                await s.diskon(res,display);
-             
-              }
-
-    })
-  
   await s.diskon(res,10);
+})
+
+app.get('/diskon/:num',async function(req,res){
+   
+   function isNumber(n) {  return !isNaN(parseFloat(n)) && !isNaN(n - 0) }
+   
+    var display = await req.params.num; //untuk manipulasi parameter num
+
+    if (await isNumber(display) !== true){
+
+        res.json({status: '200',message: 'use number for paramater to show data example /diskon/1',code: 'error'});
+
+    }else{
+
+        await s.diskon(res,display);
+
+    }
+
 })
 
 

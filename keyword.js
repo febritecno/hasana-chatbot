@@ -22,5 +22,4 @@ var elink = ['DotNETFrameworkBook','AlgorithmsBook','AndroidBook','Angular2Book'
              ,'VisualBasic_NETBook','XamarinFormsBook'];
 
 
-
 module.exports = {store_febri,store_skill,store_help,elink}

@@ -244,6 +244,7 @@ Finding Max and Min Values
   ---------------------------------
   
   
+  
   note penting penggunaan object didalam kode js harus di definikan agar tidak error pada penggunaan huruf pada value yang merupakan variable
   
   contoh [{'0':nama}] -> ini bakal error
@@ -257,10 +258,26 @@ Finding Max and Min Values
   [{'0':nama}] -> ini gk error karna sudah di daftarkan pada variable.
   
   
-  [0,1,2,n..] ini array
+  [0,1,2,n..] ini array , punya satu slot, harus di isi
   
-  {'0':0,'1':1,'2':2,n..} ini object
   
+  {'0':0,'1':1,'2':2,n..} ini object, punya dua slot. harus 2 di isi propery dan valuenya
+  
+  nested
+  
+  [{
+  anu:{},{} -> X salah
+  },{
+  },{
+  }
+  ]
+  
+  [{
+  anu:[{},{}] -> X benar, karna perluh array agar object dapat menampung banyak property
+  },{
+  },{
+  }
+  ]
   
   
   

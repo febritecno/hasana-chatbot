@@ -1604,7 +1604,7 @@ packages:
     resolution:
       integrity: sha1-fWTIVuTxzTw1p4+G4KKWDmp9BHQ=
 registry: 'https://registry.npmjs.org/'
-shrinkwrapMinorVersion: 8
+shrinkwrapMinorVersion: 9
 shrinkwrapVersion: 3
 specifiers:
   '@line/bot-sdk': ^1.0.0

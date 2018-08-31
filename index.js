@@ -9,6 +9,8 @@ var apicache = require('apicache');
 
 var s = require('./scrape');
 
+//var word = require('./keyword');
+
 // create LINE SDK config from env variables
 const config = {
     channelAccessToken: process.env.CAT,
@@ -23,6 +25,8 @@ const client = new line.Client(config);
 const app = express();
 var x=xray();
 var c=apicache.middleware('1 hour');
+
+
 
 app.use(c);
 
@@ -40,58 +44,101 @@ app.post('/webhook', line.middleware(config), (req, res) => {
 
 
 
+
 // Function router
 
-
-var addmore = async (url) => {
+function isNumber(n){   //cek number
   
-  app.get(url+'/:num',async function(req,res){
-   
-   function isNumber(n) {  return !isNaN(parseFloat(n)) && !isNaN(n - 0) }
-   
-    var display = await req.params.num; //untuk manipulasi parameter num
+  return !isNaN(parseFloat(n)) && !isNaN(n - 0) 
 
-    if (await isNumber(display) !== true){
+}
 
-        res.json({status: '200',message: 'use number for paramater to show data example /${url}/1',code: 'error'});
+var addmore_catagory = async (url,adapter) => {
+  
+  app.get(url+'/:kategori'+'/more/:num',async function(req,res){
+   
+   function isNumber(n){  return !isNaN(parseFloat(n)) && !isNaN(n - 0) }
+   
+    var num = await req.params.num; //untuk manipulasi parameter jumlah num
+    var catagory = await req.params.kategori;
+
+    if (await isNumber(num) !== true){
+
+        res.json({status: '200',message: 'use number for paramater to show data example '+url+'/more/'+':number',code: 'error'});
 
     }else{
 
-        await s.diskon(res,display);
+        await adapter(res,catagory,num);
 
     }
 
 })
   
-  return url
+}
 
+var addmore = async (url,adapter) => {
+  
+  app.get(url+'/more/:num',async function(req,res){
+   
+    var display = await req.params.num; //untuk manipulasi parameter num
+
+    if (await isNumber(display) !== true){
+
+        res.json({
+                  status: '200',
+                  message: 'use number for paramater to show data example '+url+'/more/'+':number',
+                  code: 'error'
+                 });
+
+    }else{
+
+        await adapter(res,display);
+
+    }
+
+})
+  
 }
 
 // router
-app.get('/nime',async function (req, res) {
-  await s.nime(res,10);
+app.get('/nime',function (req, res) {
+  s.nime(res,1); // limit sesuai dengan jumlah item perhalaman
 })
 
-app.get('/recom',async function (req, res) {
-  await s.recom(res,10);
+app.get('/recom',function (req, res) {
+  s.recom(res,1);
 })
 
-app.get('/free',async function (req, res) {
-  await s.free(res,10);
+app.get('/free',function (req, res) {
+  s.free(res,1);
 })
 
-app.get('/diskon',async function (req, res) {
-  await s.diskon(res,10);
+app.get('/diskon',function (req, res) {
+  s.diskon(res,1);
 })
 
-addmore('/nime');
-addmore('/recom');
-addmore('/free');
-addmore('/diskon');
+app.get('/ebook',function (req, res) {
+  s.book(res);
+})
+
+app.get('/ebook/:name',async function (req, res) {
+  var name = await req.params.name;
+  s.getpage(res,name);
+})
+
+app.get('/diskon/:kategori',async function (req, res) {
+  
+  var catagory = req.params.kategori;
+  s.diskon_katagori(res,catagory,1);
+  
+})
+
+addmore('/recom',s.recom);
+addmore('/free',s.free);
+addmore('/diskon',s.diskon);
+addmore_catagory('/diskon',s.diskon_katagori);
 
 //
-
-
 
 
 // event handler
@@ -101,6 +148,7 @@ function handleEvent(event) {
         
         return Promise.resolve(null);
     }
+  
     var options1 = {
         method: 'GET',
         url: 'http://api.susi.ai/susi/chat.json',
@@ -110,46 +158,49 @@ function handleEvent(event) {
         }
     };
   
-  switch(event.message.text.toLowerCase()) {
-    case "popular anime":
+
+  
+  switch(event.message.text) {
+    case 'popular anime':
     const answer = {
           "type": "template",
-          "altText": "silid Dwi Putra is humble people with skill programing and design",
+          "altText": "anime popular",
           "template": {
-            "type": "buttons",
-            "actions": [
+            "type": "carousel",
+            "actions": [],
+            "columns": [
               {
-                "type": "uri",
-                "label": "Facebook",
-                "uri": "https://www.facebook.com/febri.krn"
-              },
-              {
-                "type": "uri",
-                "label": "Linkedin",
-                "uri": "https://www.linkedin.com/in/febrian-dwi-putra-026446163"
-              },
-              { "type": "uri",
-                "label": "Github",
-                "uri": "https://github.com/febritecno"
+                "thumbnailImageUrl": "SPECIFY_YOUR_IMAGE_URL",
+                "title": "Title",
+                "text": "Text",
+                "actions": [
+                  {
+                    "type": "uri",
+                    "label": "Action 1"
+                  }
+                ]
               }
-            ],
-            "thumbnailImageUrl": "https://avatars2.githubusercontent.com/u/9696688?s=460&v=4",
-            "title": "Febrian Dwi Putra",
-            "text": "dawdwadawdawdawdawda"
+            ]
           }
         };
         return client.replyMessage(event.replyToken, answer);
         
         break;
-    case "coupon udemy":
-        
+
+    case 'test':
+      const shut = {
+          "type": "text",
+          "text": "you can visit https://skills.susi.ai/ , then you look example reference my skill. happy chatting :)"
+        };
+      return client.replyMessage(event.replyToken, shut);
         break;
+      
     default:
         
 }
   
   
-  if (event.message.text.toLowerCase() === "who febrian dwi putra"){
+  if (event.message.text === 'who febrian'){
         const answer = {
           "type": "template",
           "altText": "Febrian Dwi Putra is humble people with skill programing and design",
@@ -209,7 +260,7 @@ function handleEvent(event) {
         };
         return client.replyMessage(event.replyToken, [answer,answer1]);
     
-    } else if (event.message.text.toLowerCase() === "ahhh") {
+    } else if (event.message.text.toLowerCase() === "hasana") {
         request(options1, function(error1, response1, body1) {
             if (error1) throw new Error(error1);
 
@@ -227,8 +278,8 @@ function handleEvent(event) {
             request(options1, function(error1, response1, body1) {
             if (error1) throw new Error(error1);
             // answer fetched from api susi
-            var type = (JSON.parse(body1)).answers[0].actions;
-            var ans = (JSON.parse(body1)).answers[0].actions[0].expression;
+            var type =(JSON.parse(body1)).answers[0].actions;
+            var ans =(JSON.parse(body1)).answers[0].actions[0].expression;
             if ( ((JSON.parse(body1)).answers[0].data[0].lon) || ((JSON.parse(body1)).answers[0].data[0].lat) ) {
                 var lat = JSON.parse(body1).answers[0].data[0].lat;
                 var lon = JSON.parse(body1).answers[0].data[0].lon;

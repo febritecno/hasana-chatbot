@@ -1,6 +1,6 @@
  /** 
   
- 
+ BANYAK PRAKTEK KUDU PENTING
   
   NOTE
  
@@ -10,7 +10,9 @@
 cari payload parameter dibutuhkan,cari referensi tool pendukung.cari algoritma yg ada.
   
  
-  modal kekuatan ku sebenarnya adalah belajar dari source code orang lain pada repo orang lain terus praktek atau edit". + belajar referance keyword di dokumentasi bahasa pemprograman.
+  modal kekuatan ku sebenarnya adalah belajar dari source code orang lain pada repo orang lain terus praktek atau edit". 
+  
+  + belajar referance keyword di dokumentasi bahasa pemprograman / library terkait.
   
   baru skip  skip video, ebook.
   

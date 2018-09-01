@@ -67,6 +67,22 @@ try {
       return data.pipe(respon);
 
       }
+    
+      var nime_katagori = async(respon,name_category) => {
+      var url = await 'https://smartybro.com/category/'+name_category;
+
+      const data = await x(url,'.post',[{
+
+        title: 'h2.grid-tit a', 
+        img: 'a img@data-lazy-src',
+        coupon:'h2.grid-tit a@href'
+
+      }]).paginate('.pagination a.next.page-numbers@href')
+         .limit(2)   
+         .stream()
+
+      return data.pipe(respon);
+    }
 
 
     var smartybro = async (respon,num) => {
@@ -136,4 +152,4 @@ try {
   console.log(err);
 }
 
-module.exports = {nime,recom,smartybro,smartybro_katagori,diskon,diskon_katagori,ebook,getpage};
+module.exports = {nime,nime_katagori,recom,smartybro,smartybro_katagori,diskon,diskon_katagori,ebook,getpage};

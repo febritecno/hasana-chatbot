@@ -154,21 +154,185 @@ addmore_category('/free',s.smartybro_katagori);
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
 // event handler area bot line
 
-function handleEvent(event) {
+async function handleEvent(event) {
+  // simple reply function
+const replyText = (token, texts) => {
+  texts = Array.isArray(texts) ? texts : [texts];
+  return client.replyMessage(
+    token,
+    texts.map((text) => ({ type: 'text', text }))
+  );
+};
+
+    
+    var menu = () => {
+    
+      const menu = {
+            "type": "template",
+            "altText": "menu utama",
+            "template": {
+                "type": "carousel",
+                "columns": [
+                {
+                  "thumbnailImageUrl": "https://i.imgur.com/A1xzRuo.png",
+                  "imageBackgroundColor": "#FFFFFF",
+                  "title": "Batch Anime",
+                  "text": "Latest Update Batch Anime",
+                  "defaultAction": {
+                      "type": "message",
+                      "label": "LATEST ANIME",
+                      "text": "latest anime today"
+                  },
+                  "actions": [
+                      {
+                          "type": "message",
+                          "label": "LATEST ANIME",
+                          "text": "latest anime today"
+                      },
+                      {
+                          "type": "message",
+                          "label": "RECOMMENDED ANIME",
+                          "text": "popular anime today"
+                      },
+                      {
+                          "type": "message",
+                          "label":"CATEGORY ANIME",
+                          "text": "choose category anime"
+                      }
+                  ]
+                },
+                {
+                  "thumbnailImageUrl": "https://i.imgur.com/toDUruo.png",
+                  "imageBackgroundColor": "#000000",
+                  "title": "Free Ebook",
+                  "text": "Download Referance Ebook Programing",
+                  "defaultAction": {
+                          "type": "message",
+                          "label": "LATEST EBOOK",
+                          "text": "latest ebook"
+                  },
+                  "actions": [
+                      {
+                          "type": "message",
+                          "label": "LATEST EBOOK",
+                          "text": "latest ebook"
+                      },
+                       {
+                          "type": "message",
+                          "label": "DOWNLOAD EBOOK",
+                          "text": "choose ebook"
+                      },
+                      {
+                          "type": "message",
+                          "label":" ",
+                          "text": " "
+                      }
+                  ]
+                },
+                  {
+                  "thumbnailImageUrl": "https://i.imgur.com/FePUDRa.png",
+                  "imageBackgroundColor": "#FFFFFF",
+                  "title": "Udemy Coupon",
+                  "text": "Latest Coupon Code",
+                  "defaultAction": {
+                          "type": "message",
+                          "label": "LATEST COUPON CODE",
+                          "text": "coupon today"
+                  },
+                  "actions": [
+                      {
+                          "type": "message",
+                          "label": "LATEST COUPON CODE",
+                          "text": "coupon today"
+                      },
+                      {
+                          "type": "message",
+                          "label":"CATEGORY COUPON",
+                          "text": "choose coupon"
+                      },
+                      {
+                          "type": "message",
+                          "label":" ",
+                          "text": " "
+                      }
+                  ]
+                },
+                  {
+                  "thumbnailImageUrl": "https://i.imgur.com/1djYIeZ.png",
+                  "imageBackgroundColor": "#FFFFFF",
+                  "title": "Free 100% Course",
+                  "text": "Latest Coupon Smartybro",
+                  "defaultAction": {
+                       "type": "message",
+                       "label": "LATEST SMARTYBRO",
+                       "text": "smartybro today"
+                  },
+                  "actions": [
+                      {
+                          "type": "message",
+                          "label": "LATEST SMARTYBRO",
+                          "text": "smartybro today"
+                      },
+                      {
+                          "type": "message",
+                          "label":"CATEGORY SMARTYBRO",
+                          "text": "choose smartybro"
+                      },
+                      {
+                          "type": "message",
+                          "label":" ",
+                          "text": " "
+                      }
+                  ]
+                }
+            ],
+            "imageAspectRatio": "rectangle",
+            "imageSize": "cover"
+        }
+      }
+
+            return client.replyMessage(event.replyToken, menu);
+    
+    }
+  
+    var err = () => {
+       if (typeof(type) == 'undefined'){
+          const answer = {
+            "type": "text",
+            "text": "ouh, i'm don't know what your say my lord. maybe, i will show menu to help you. keep calm :)"
+          };
+          const answer1 = {
+            "type": "sticker",
+            "packageId": "1",
+            "stickerId": "3"
+          };
+               
+          const menu = { 
+            "type": "template",
+            "altText": "Choose Your Favorite Services",
+            "template": {
+              "type": "buttons",
+              "actions": [
+                {
+                  "type": "message",
+                  "label": "CLICK HERE",
+                  "text": "show menu"
+                }
+              ],
+                  "thumbnailImageUrl": "https://i.imgur.com/lGtnHm0.jpg",
+                  "title": "Want to go to the menu ?",
+                  "text": "dont't worry, i'm always stay with you."
+            }     
+          }
+                return client.replyMessage(event.replyToken, [answer1,answer,menu]);
+        }
+      }
+  
+  
+  
+  
     if (event.type !== 'message' || event.message.type !== 'text') { // event -> array, type -> property pada object. sample object: {type: 'message'}
         // ignore non-text-message event
         
@@ -189,40 +353,15 @@ function handleEvent(event) {
   //switch case handle pengganti kondisi if else
  
   switch(event.message.text.toLowerCase()) {
+    
     case 'popular anime':
-    const answer = {
-          "type": "template",
-          "altText": "anime popular",
-          "template": {
-            "type": "carousel",
-            "actions": [],
-            "columns": [
-              {
-                "thumbnailImageUrl": "SPECIFY_YOUR_IMAGE_URL",
-                "title": "Title",
-                "text": "Text",
-                "actions": [
-                  {
-                    "type": "uri",
-                    "label": "Action 1"
-                  }
-                ]
-              }
-            ]
-          }
-        };
-        return client.replyMessage(event.replyToken, answer);
-        
-        break;
-
-    case 'show menu':
-      const menu = {
+    const anime = {
       "type": "template",
-      "altText": "this is a carousel template",
+      "altText": "anime menu",
       "template": {
           "type": "carousel",
           "columns": [
-          {
+            {
             "thumbnailImageUrl": "https://i.imgur.com/A1xzRuo.png",
             "imageBackgroundColor": "#FFFFFF",
             "title": "Batch Anime",
@@ -249,104 +388,33 @@ function handleEvent(event) {
                     "text": "choose category anime"
                 }
             ]
-          },
-          {
-            "thumbnailImageUrl": "https://i.imgur.com/toDUruo.png",
-            "imageBackgroundColor": "#000000",
-            "title": "Free Ebook",
-            "text": "Download Referance Ebook Programing",
-            "defaultAction": {
-                    "type": "message",
-                    "label": "LATEST EBOOK",
-                    "text": "latest ebook"
-            },
-            "actions": [
-                {
-                    "type": "message",
-                    "label": "LATEST EBOOK",
-                    "text": "latest ebook"
-                },
-                 {
-                    "type": "message",
-                    "label": "DOWNLOAD EBOOK",
-                    "text": "choose ebook"
-                },
-                {
-                    "type": "message",
-                    "label":" ",
-                    "text": " "
-                }
-            ]
-          },
-            {
-            "thumbnailImageUrl": "https://i.imgur.com/FePUDRa.png",
-            "imageBackgroundColor": "#FFFFFF",
-            "title": "Udemy Coupon",
-            "text": "Latest Coupon Code",
-            "defaultAction": {
-                    "type": "message",
-                    "label": "LATEST COUPON CODE",
-                    "text": "coupon today"
-            },
-            "actions": [
-                {
-                    "type": "message",
-                    "label": "LATEST COUPON CODE",
-                    "text": "coupon today"
-                },
-                {
-                    "type": "message",
-                    "label":"CATEGORY COUPON",
-                    "text": "choose coupon"
-                },
-                {
-                    "type": "message",
-                    "label":" ",
-                    "text": " "
-                }
-            ]
-          },
-            {
-            "thumbnailImageUrl": "https://i.imgur.com/1djYIeZ.png",
-            "imageBackgroundColor": "#FFFFFF",
-            "title": "Free 100% Course",
-            "text": "Latest Coupon Smartybro",
-            "defaultAction": {
-                 "type": "message",
-                 "label": "LATEST SMARTYBRO",
-                 "text": "smartybro today"
-            },
-            "actions": [
-                {
-                    "type": "message",
-                    "label": "LATEST SMARTYBRO",
-                    "text": "smartybro today"
-                },
-                {
-                    "type": "message",
-                    "label":"CATEGORY SMARTYBRO",
-                    "text": "choose smartybro"
-                },
-                {
-                    "type": "message",
-                    "label":" ",
-                    "text": " "
-                }
-            ]
           }
-      ],
-      "imageAspectRatio": "rectangle",
-      "imageSize": "cover"
-  }
-}
-  
-      return client.replyMessage(event.replyToken, menu);
+          ],
+          "imageAspectRatio": "rectangle",
+          "imageSize": "cover"
+      }
+    }
+    
+        return client.replyMessage(event.replyToken, anime);
+        
+        break;
+
+    case 'show menu':
+        menu();
         break;
       
+    case 'who am i':
+      var id = event.source.userId;
+      var push = client.getProfile(id).then((profil)=> {
+        replyText(event.replyToken,`NAME: ${profil.displayName} \n USER ID: ${profil.userId} \n IMAGE: ${profil.pictureUrl} \n STATUS: ${profil.statusMessage}`);
+      })
+      break
+      
     default: 
-  
 }
         
+  ///
+  
   
   if (event.message.text.toLowerCase() === 'who febrian'){
         const answer = {
@@ -391,8 +459,8 @@ function handleEvent(event) {
               }
             ],
             "thumbnailImageUrl": "https://i.imgur.com/Mo2OOwm.png",
-            "title": "Show help",
-            "text": "You can get help now"
+            "title": "Help Me, Captain!",
+            "text": "you don't know how to use it?"
           }
         };
     
@@ -401,7 +469,7 @@ function handleEvent(event) {
     }else if (event.message.text.toLowerCase() === "what can you do ?"){
         const answer = {
           "type": "text",
-          "text": "you can visit https://skills.susi.ai/ , then you look example reference my skill. happy chatting :)"
+          "text": "you can visit https://skills.susi.ai/, then you look example reference of my skill. look skill and let's try chat to me."
         };
         const answer1 = {
           "type": "sticker",
@@ -410,7 +478,8 @@ function handleEvent(event) {
         };
         return client.replyMessage(event.replyToken, [answer,answer1]);
     
- } else if (event.message.text.toLowerCase() === "start") {
+ } else if (event.message.text.toLowerCase() === "") {
+
    try{
         request(options1, function(error1, response1, body1) {
           
@@ -421,177 +490,15 @@ function handleEvent(event) {
             const sampleQ = [{
                     type: 'text',
                     text: ans
-                },
-                {
-                "type": "template",
-                "altText": "this is a carousel template",
-                "template": {
-                    "type": "carousel",
-                    "columns": [
-                    {
-                      "thumbnailImageUrl": "https://i.imgur.com/A1xzRuo.png",
-                      "imageBackgroundColor": "#FFFFFF",
-                      "title": "Batch Anime",
-                      "text": "Latest Update Batch Anime",
-                      "defaultAction": {
-                          "type": "message",
-                          "label": "LATEST ANIME",
-                          "text": "latest anime today"
-                      },
-                      "actions": [
-                          {
-                              "type": "message",
-                              "label": "LATEST ANIME",
-                              "text": "latest anime today"
-                          },
-                          {
-                              "type": "message",
-                              "label": "RECOMMENDED ANIME",
-                              "text": "popular anime today"
-                          },
-                          {
-                              "type": "message",
-                              "label":"CATEGORY ANIME",
-                              "text": "choose category anime"
-                          }
-                      ]
-                    },
-                    {
-                      "thumbnailImageUrl": "https://i.imgur.com/toDUruo.png",
-                      "imageBackgroundColor": "#000000",
-                      "title": "Free Ebook",
-                      "text": "Download Referance Ebook Programing",
-                      "defaultAction": {
-                              "type": "message",
-                              "label": "LATEST EBOOK",
-                              "text": "latest ebook"
-                      },
-                      "actions": [
-                          {
-                              "type": "message",
-                              "label": "LATEST EBOOK",
-                              "text": "latest ebook"
-                          },
-                           {
-                              "type": "message",
-                              "label": "DOWNLOAD EBOOK",
-                              "text": "choose ebook"
-                          },
-                          {
-                              "type": "message",
-                              "label":" ",
-                              "text": " "
-                          }
-                      ]
-                    },
-                      {
-                      "thumbnailImageUrl": "https://i.imgur.com/FePUDRa.png",
-                      "imageBackgroundColor": "#FFFFFF",
-                      "title": "Udemy Coupon",
-                      "text": "Latest Coupon Code",
-                      "defaultAction": {
-                              "type": "message",
-                              "label": "LATEST COUPON CODE",
-                              "text": "coupon today"
-                      },
-                      "actions": [
-                          {
-                              "type": "message",
-                              "label": "LATEST COUPON CODE",
-                              "text": "coupon today"
-                          },
-                          {
-                              "type": "message",
-                              "label":"CATEGORY COUPON",
-                              "text": "choose coupon"
-                          },
-                          {
-                              "type": "message",
-                              "label":" ",
-                              "text": " "
-                          }
-                      ]
-                    },
-                      {
-                      "thumbnailImageUrl": "https://i.imgur.com/1djYIeZ.png",
-                      "imageBackgroundColor": "#FFFFFF",
-                      "title": "Free 100% Course",
-                      "text": "Latest Coupon Smartybro",
-                      "defaultAction": {
-                           "type": "message",
-                           "label": "LATEST SMARTYBRO",
-                           "text": "smartybro today"
-                      },
-                      "actions": [
-                          {
-                              "type": "message",
-                              "label": "LATEST SMARTYBRO",
-                              "text": "smartybro today"
-                          },
-                          {
-                              "type": "message",
-                              "label":"CATEGORY SMARTYBRO",
-                              "text": "choose smartybro"
-                          },
-                          {
-                              "type": "message",
-                              "label":" ",
-                              "text": " "
-                          }
-                      ]
-                    }
-                ],
-                "imageAspectRatio": "rectangle",
-                "imageSize": "cover"
-                }
-              }
-            ]
-            return client.replyMessage(event.replyToken, sampleQ);
+                }]
+              return client.replyMessage(event.replyToken, sampleQ);
         });
+     
+    }catch(e){
+         err();
+    }
    
- }catch(e){
- 
    
-             if (typeof(type) == 'undefined'){
-              const answer = {
-              "type": "text",
-              "text": "ouh, i'm don't know my lord. i will show menu for you. keep calm :)"
-              };
-              const answer1 = {
-                "type": "sticker",
-                "packageId": "1",
-                "stickerId": "3"
-              };
-               
-               const answer2 = {
-                "type": "sticker",
-                "packageId": "1",
-                "stickerId": "109"
-              };
-               
-              const menu = {
-              
-              "type": "template",
-              "altText": "Select Your Favorite Service",
-              "template": {
-                "type": "buttons",
-                "actions": [
-                  {
-                    "type": "message",
-                    "label": "CLICK HERE",
-                    "text": "show menu"
-                  }
-                ],
-                "thumbnailImageUrl": "https://i.imgur.com/lGtnHm0.jpg",
-                "title": "Menu Service",
-                "text": "dont't worry, i'm always stay with you."
-              }
-                
-            }
-                return client.replyMessage(event.replyToken, [answer1,answer,menu,answer2]);
-
-              }
- }
     } else {
         request(options1, async function(error1, response1, body1) {
             if (error1) throw new Error(error1);
@@ -600,52 +507,7 @@ function handleEvent(event) {
             var type = await (JSON.parse(body1)).answers[0].actions;
             var ans = await (JSON.parse(body1)).answers[0].actions[0].expression;
             
-          }catch(e){ // handle error undefined callback
-            
-            
-            
-             if (typeof(type) == 'undefined'){
-              const answer = {
-              "type": "text",
-              "text": "ouh, i'm don't know my lord. i will show menu for you. keep calm :)"
-              };
-              const answer1 = {
-                "type": "sticker",
-                "packageId": "1",
-                "stickerId": "3"
-              };
-               
-               const answer2 = {
-                "type": "sticker",
-                "packageId": "1",
-                "stickerId": "109"
-              };
-               
-              const menu = {
-              
-              "type": "template",
-              "altText": "Select Your Favorite Service",
-              "template": {
-                "type": "buttons",
-                "actions": [
-                  {
-                    "type": "message",
-                    "label": "CLICK HERE",
-                    "text": "show menu"
-                  }
-                ],
-                "thumbnailImageUrl": "https://i.imgur.com/lGtnHm0.jpg",
-                "title": "Menu Service",
-                "text": "dont't worry, i'm always stay with you."
-              }
-                
-            }
-                return client.replyMessage(event.replyToken, [answer1,answer,menu,answer2]);
-
-              }
-          }
-
-           
+          
             if ( ((JSON.parse(body1)).answers[0].data[0].lon) || ((JSON.parse(body1)).answers[0].data[0].lat) ) {
                 var lat = JSON.parse(body1).answers[0].data[0].lat;
                 var lon = JSON.parse(body1).answers[0].data[0].lon;
@@ -766,8 +628,11 @@ function handleEvent(event) {
                     }
                 ]
                 return client.replyMessage(event.replyToken, answer);
-            }
+            }}catch(e){ // handle error undefined callback
+            err();
+          }
         })
+        
     }
 }
 

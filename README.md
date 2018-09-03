@@ -26,24 +26,31 @@ https://glitch.com/edit/#!/hasana
 
 ## anime from drivenime
 https://hasana.glitch.me/nime
+
 https://hasana.glitch.me/nime/:catagory
 
 ## popular anime drivenime
 https://hasana.glitch.me/recom
+
 https://hasana.glitch.me/recom/more/:number
 
 ## udemy coupon from smartybro.com
 https://hasana.glitch.me/diskon
+
 https://hasana.glitch.me/diskon/more/:number
+
 https://hasana.glitch.me/diskon/:catagory
 
 ## udemy coupon from udemycoupon.learnviral.com
 https://hasana.glitch.me/free
+
 https://hasana.glitch.me/free/more/:number
+
 https://hasana.glitch.me/free/:catagory
 
 ## free ebook from goalkicker.com
 https://hasana.glitch.me/ebook
+
 https://hasana.glitch.me/ebook/:name_ebook
 
 

@@ -18,7 +18,7 @@ host it on node server like glitch, now or heroku
 
 https://glitch.com/edit/#!/hasana
 
-# scrape stream result by xray
+# result stream scrape with pipe by xray
 
 ![](https://i.imgur.com/dY8e7Wo.png)
 

@@ -8,12 +8,22 @@ var http = require('http');
 var apicache = require('apicache');
 
 
-var server  = require('./server-config')
-
+var server  = require('./server-config');
 
 var s = require('./scrape'); //load scrape function target
 
+// if else service
+//var nime_latest  = require('./nime/nime_latest');
+//var nime_recom  = require('./nime/nime_recom');
+//var nime_catagory  = require('./nime/nime_catagory');
+//
+
 //var word = require('./keyword');
+
+
+// line limit 10 item pada tab gulir,50 karakter pada text dan 40 karakter pada title,
+//jika error saat parse respon 404 bearti ada yang melebihi limit atau property tidak sesuai aturan line.
+
 
 // create LINE SDK config from env variables
 const config = {
@@ -171,6 +181,7 @@ const replyText = (token, texts) => {
 };
 
     
+  // menu utama di load disini
     var menu = () => {
     
       const menu = {
@@ -239,7 +250,7 @@ const replyText = (token, texts) => {
                   "thumbnailImageUrl": "https://i.imgur.com/toDUruo.png",
                   "imageBackgroundColor": "#000000",
                   "title": "Free Ebook",
-                  "text": "Download Referance Ebook Programing",
+                  "text": "Download Reference Ebook Programing",
                   "defaultAction": {
                           "type": "message",
                           "label": "LATEST EBOOK",
@@ -361,9 +372,15 @@ const replyText = (token, texts) => {
                 return client.replyMessage(event.replyToken, [answer1,answer,menu]);
         }
       }
+  /////////////////
   
   
-  
+    
+    
+    
+    
+    ///// BOT AREA HERE ------------------------------------
+    
   
     if (event.type !== 'message' || event.message.type !== 'text') { // event -> array, type -> property pada object. sample object: {type: 'message'}
         // ignore non-text-message event
@@ -382,7 +399,9 @@ const replyText = (token, texts) => {
     };
   
   
-  //switch case handle static menu
+  
+  
+  //// switch case handle static menu -------------------------
  
   switch(event.message.text.toLowerCase()) {
     
@@ -508,12 +527,15 @@ const replyText = (token, texts) => {
     default: 
 }
         
-  ///
+  ///////////
   
   
   
   
   
+  
+  
+  /////// SERVICE BOT DENGAN PIHAK KETIGA/SCRAPE/API ------------
   
   
   if (event.message.text.toLowerCase() === "start") {
@@ -539,16 +561,17 @@ const replyText = (token, texts) => {
     }catch(e){
          err();
     }
-   
-   
+    
+    
+  
     }else if(event.message.text.toLowerCase() === "recommendations"){
-      request(server.recom,async function(er,req,bo){
+          request(server.recom,async function(er,req,bo){
         try{
         
           if (er) throw new Error(er);    
             var body=await (JSON.parse(bo));
             var carousel =await [];
-            //var data =[];
+            
             for (var i = 1; i <= 9; i++) {
                 var title = await body[i].title;
                 var img = await body[i].img;
@@ -558,12 +581,7 @@ const replyText = (token, texts) => {
                       title = title.substring(0, 50);
                       title = title + "...";
                   }
-
-                  /**data[i]= {
-                        type: 'text',
-                        text : title          
-
-                  }**/
+              
                   carousel[i] = {
                           "thumbnailImageUrl": img,
                           "imageBackgroundColor": "#FFFFFF",
@@ -588,11 +606,7 @@ const replyText = (token, texts) => {
                           ]
                         };
               }
-
-           //console.log([carousel[1],carousel[2],carousel[3]]);
-
-            //const text = [data[1],data[2],data[3],data[4],data[5],data[6]]
-
+          
             const recom = {
                     "type": "template",
                     "altText": "ANIME RECOMMENDED",
@@ -610,16 +624,16 @@ const replyText = (token, texts) => {
               err();
             }
           })
-      
+        
     }else if(event.message.text.toLowerCase() === "latest anime today"){
-      request('https://hasana.glitch.me/nime',async function(er1,req1,bo1){
+      request(server.nime,async function(er1,req1,bo1){
         try{
         
           if (er1) throw new Error(er1);    
-            var body=await (JSON.parse(bo1).splice(2,20));
+            var body=await (JSON.parse(bo1).splice(1,10));
             var carousel =await [];
             
-          for (var i = 1; i <= 11; i++) {
+          for (var i = 1; i <= 9; i++) {
                 var title = await body[i].title;
                 var img = await body[i].img;
                 var desc = await body[i].desc;
@@ -665,19 +679,108 @@ const replyText = (token, texts) => {
                     "altText": "BATCH ANIME",
                     "template": {
                         "type": "carousel",
+                        "columns": [carousel[1],carousel[2],carousel[3],carousel[4],carousel[5],carousel[6],carousel[7],carousel[8],carousel[9],
+                                   {
+                                    "thumbnailImageUrl": "https://cdn.onlinewebfonts.com/svg/img_403004.png",
+                                    "imageBackgroundColor": "#B0BEC5",
+                                    "title": " ",
+                                    "text": " ",
+                                    "defaultAction": {
+                                            "type": "message",
+                                            "label": "CLICK HERE",
+                                            "text": "more latest anime"
+                                    },
+                                    "actions": [
+                                        {
+                                            "type": "message",
+                                            "label": "LOAD MORE",
+                                            "text": "more latest anime"
+                                        },
+                                        {
+                                            "type": "message",
+                                            "label":" ",
+                                            "text": " "
+                                        }
+                                    ]
+                                  }
+                                   
+                                   ],
+                        "imageAspectRatio": "rectangle",
+                        "imageSize": "cover"
+                      }
+                   }
+
+        
+             return client.replyMessage(event.replyToken,anime);
+                           
+            }catch(er1){
+            console.log(er1)
+            err();
+            }
+          })       
+      
+    } else if(event.message.text.toLowerCase() === "more latest anime"){
+      request(server.nime,function(er1,req1,bo1){
+          if (er1) throw new Error(er1);    
+            var body= (JSON.parse(bo1).splice(12,22));
+            var carousel = [];
+            
+          for (var i = 1; i <= 10; i++) {
+                var title = body[i].title;
+                var img =  body[i].img;
+                var desc = body[i].desc;
+                var link = body[i].link;
+
+                 if (title.length >= 36) {
+                      title = title.substring(0, 37);
+                      title = title + "...";
+                  }
+                 
+                  if (desc.length >= 49) {
+                      desc = desc.substring(0, 50);
+                      desc = desc + "...";
+                  }
+                    
+              carousel[i] = {
+                          "thumbnailImageUrl": img,
+                          "imageBackgroundColor": "#FFFFFF",
+                          "title": title,
+                          "text": desc,
+                          "defaultAction": {
+                                  "type": "uri",
+                                  "label": "DOWNLOAD NOW",
+                                  "uri": link
+                          },
+                          "actions": [
+                              {
+                                  "type": "uri",
+                                  "label": "DOWNLOAD NOW",
+                                  "uri": link
+                              },
+                              {
+                                  "type": "message",
+                                  "label":"RETURN TO MENU",
+                                  "text": "show menu"
+                              }
+                          ]
+                        };
+              }
+
+            const more_latest = {
+                    "type": "template",
+                    "altText": "BATCH ANIME",
+                    "template": {
+                        "type": "carousel",
                         "columns": [carousel[1],carousel[2],carousel[3],carousel[4],carousel[5],carousel[6],carousel[7],carousel[8],carousel[9],carousel[10]],
                         "imageAspectRatio": "rectangle",
                         "imageSize": "cover"
                       }
                    }
 
-             return client.replyMessage(event.replyToken,anime);
-          
-            }catch(er1){
-            console.log(er1)
-            err();
-            }
-          })       
+             return client.replyMessage(event.replyToken,more_latest);
+            
+            })
+      
       }else{
         request(options1, async function(error1, response1, body1) {
         if (error1) throw new Error(error1);

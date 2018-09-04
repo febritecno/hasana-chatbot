@@ -1,5 +1,11 @@
  /** 
   
+  
+  JSON link gambar + addons Extension Imagus chrome buat lihat gambar dari link
+  
+  
+  
+  
  BANYAK PRAKTEK KUDU PENTING
   
   NOTE

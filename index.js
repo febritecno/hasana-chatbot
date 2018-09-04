@@ -611,7 +611,7 @@ const replyText = (token, texts) => {
             }
           })
       
-    }else if(event.message.text.toLowerCase() === "anime"){
+    }else if(event.message.text.toLowerCase() === "latest anime today"){
       request('https://hasana.glitch.me/nime',async function(er1,req1,bo1){
         try{
         
@@ -662,7 +662,7 @@ const replyText = (token, texts) => {
 
             const anime = {
                     "type": "template",
-                    "altText": "anime bllb",
+                    "altText": "BATCH ANIME",
                     "template": {
                         "type": "carousel",
                         "columns": [carousel[1],carousel[2],carousel[3],carousel[4],carousel[5],carousel[6],carousel[7],carousel[8],carousel[9],carousel[10]],

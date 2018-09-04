@@ -69,15 +69,16 @@ try {
       }
     
       var nime_katagori = async(respon,name_category) => {
-      var url = await 'https://smartybro.com/category/'+name_category;
+      var url = await 'https://drivenime.com/genre/'+name_category;
 
-      const data = await x(url,'.post',[{
+      const data = await x(url,'#content_box .post.excerpt',[{
 
-        title: 'h2.grid-tit a', 
-        img: 'a img@data-lazy-src',
-        coupon:'h2.grid-tit a@href'
+        title: 'a@title',
+        img: '.featured-thumbnail img@data-lazy-src',
+        desc: '.post-content.image-caption-format-1',
+        link: 'a@href'
 
-      }]).paginate('.pagination a.next.page-numbers@href')
+      }]).paginate('.pagination a@href')
          .limit(2)   
          .stream()
 

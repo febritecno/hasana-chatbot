@@ -7,6 +7,98 @@
   
   
   
+  4sep2018
+  -----
+  
+  filter -> seleksi
+  slice -> ngurangi karakter
+  splice -> ngurangi jumlah array/object
+  indexOf-> untuk tahu nomer berapa indexnya
+  reduce-> untuk pengoprasian fungsi dalam array
+  toString -> jadi string
+  NaN
+  undefined
+  
+  JSON.stringify -> var object di koding ke JSON api
+  JSON.parse-> JSON api ke var object koding
+  
+  
+  
+  
+  di php untuk mengambil tiap data
+  
+  anus = ['a' => 'ini a','b' => 'ini b']
+  
+  foreach($anus as $anu ){
+  
+  echo $anu->a;
+  echo $anu->b
+  
+  }
+  
+  
+  javascript
+  
+  var data=""
+  var anus = [{anu: 'a'},{anu: 'b'}...n ];
+  
+  for(var isi in anus){
+    var data =   data + anus[isi].anu // result nomer index tiap isi array/nama property tiap object
+  
+  }
+  
+  recomended pakai map ini
+  
+var array1 = [{nama:'satu',kelas:'dua'},{nama:'dua',kelas:'tiga'}];
+
+array1.map((x)=> {
+  console.log(`nama => ${x.nama} dan kelas ${x.kelas}`);
+});
+
+
+
+  passing value pada string dengan format `halo ${value}`
+  
+  --
+  mnipulasi array
+  .pop/push (dari belakan mengurangi array dan menambah array)vs .shift/unshift (dari depan mengurangi array dan menambah array)
+  performa lebih bagus pop/push.
+  
+  
+  3sep2018
+  ----
+  loop
+  
+  for in vs for of
+  
+  [hasil number_index] for in = result angka index pada tiap array, kalau berbentuk object maka hanya akan result property" index pada object tidak isinya.
+  kalau pakai .map() maka akan magic dan otomatis ngeindex sendiri.
+  contoh 
+  
+  var data=(JSON.parse(body));
+   for(var number_index in json){
+   console.log(`nama anime ${data[number_index].title}`);
+   }
+   
+   SAAT MENGGUNAKAN FUNGSI BACA DULU ISI DARI PARAMETERNYA SEBELUM MENGGUNAKAN MISAL MAP(TEMPAT PARAMETER DATA,PARAMETER INDEX, DAN LAIN);
+  
+  [hasilnya value] for of = result isi dari tiap array, kalau ingin beresult angka pakai index = Math.floor(Math.random() * array.length trus array[index].
+  
+  https://alligator.io/js/for-of-for-in-loops/
+  
+  
+  .forEach() vs .map
+  hanya bisa diginakan untuk array atau array object. kalau hnya object saja tidak bisa {}
+  semua yg bisa dilakukan forEach bisa di lakukan .map
+  cocok digunakan untuk mengirim data
+  peforma lebih bagus .map daripada .forEach
+  
+  cara kerja seperti for in  variable dalam init akan jadi perwakilan dalam pemilihan didalam proses
+  
+  ================================
+  
+  
+  
   
   
   

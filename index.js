@@ -7,6 +7,10 @@ var request = require('request');
 var http = require('http');
 var apicache = require('apicache');
 
+
+var server  = require('./server-config')
+
+
 var s = require('./scrape'); //load scrape function target
 
 //var word = require('./keyword');
@@ -39,10 +43,6 @@ app.post('/webhook', line.middleware(config), (req, res) => {
             res.status(500).end();
         });
 });
-
-
-
-
 
 
 
@@ -109,6 +109,10 @@ app.use(c); //use cached middleware on router
 app.get('/nime',function (req, res) { //index drivenime
   s.nime(res,1); // limit sesuai dengan jumlah item perhalaman
 })
+app.get('/nime/:kategori',async function (req, res) { //katagori drivenime
+  var category = await req.params.kategori;
+  s.nime_katagori(res,category);
+})
 
 app.get('/recom',function (req, res) { //top anime drivenime
   s.recom(res,1);
@@ -171,11 +175,39 @@ const replyText = (token, texts) => {
     
       const menu = {
             "type": "template",
-            "altText": "menu utama",
+            "altText": "MENU UTAMA",
             "template": {
                 "type": "carousel",
                 "columns": [
                 {
+                  "thumbnailImageUrl": "https://news.bitcoin.com/wp-content/uploads/2018/04/bitcoin-trading-bot.jpg",
+                  "imageBackgroundColor": "#FFFFFF",
+                  "title": "Hasana Menu",
+                  "text": "choose your favorite menu",
+                  "defaultAction": {
+                      "type": "message",
+                      "label": "About Developer",
+                      "text": "who febrian"
+                  },
+                  "actions": [
+                      {
+                          "type": "message",
+                          "label": "HELP!",
+                          "text": "help"
+                      },
+                      {
+                          "type": "uri",
+                          "label": "ABOUT BOT SKILL",
+                          "uri": "https://skills.susi.ai"
+                      },
+                      {
+                          "type": "message",
+                          "label":"ABOUT DEVELOPER",
+                          "text": "who febrian"
+                      }
+                  ]
+                },
+                  {
                   "thumbnailImageUrl": "https://i.imgur.com/A1xzRuo.png",
                   "imageBackgroundColor": "#FFFFFF",
                   "title": "Batch Anime",
@@ -193,12 +225,12 @@ const replyText = (token, texts) => {
                       },
                       {
                           "type": "message",
-                          "label": "RECOMMENDED ANIME",
-                          "text": "popular anime today"
+                          "label": "ANIME RECOMMENDED",
+                          "text": "recommendations"
                       },
                       {
                           "type": "message",
-                          "label":"CATEGORY ANIME",
+                          "label":"ANIME CATEGORY",
                           "text": "choose category anime"
                       }
                   ]
@@ -298,10 +330,10 @@ const replyText = (token, texts) => {
     }
   
     var err = () => {
-       if (typeof(type) == 'undefined'){
+       if (typeof(type) == 'undefined' || typeof(data) == 'undefined' || typeof(actions) == 'undefined'){
           const answer = {
             "type": "text",
-            "text": "ouh, i'm don't know what your say my lord. maybe, i will show menu to help you. keep calm :)"
+            "text": "ouh, i'm don't know what your say my lord. maybe, i will send menu to help you. keep calm :)"
           };
           const answer1 = {
             "type": "sticker",
@@ -311,7 +343,7 @@ const replyText = (token, texts) => {
                
           const menu = { 
             "type": "template",
-            "altText": "Choose Your Favorite Services",
+            "altText": "CHOOSE YOUR MENU",
             "template": {
               "type": "buttons",
               "actions": [
@@ -349,75 +381,13 @@ const replyText = (token, texts) => {
         }
     };
   
-
-  //switch case handle pengganti kondisi if else
+  
+  //switch case handle static menu
  
   switch(event.message.text.toLowerCase()) {
     
-    case 'popular anime':
-    const anime = {
-      "type": "template",
-      "altText": "anime menu",
-      "template": {
-          "type": "carousel",
-          "columns": [
-            {
-            "thumbnailImageUrl": "https://i.imgur.com/A1xzRuo.png",
-            "imageBackgroundColor": "#FFFFFF",
-            "title": "Batch Anime",
-            "text": "Latest Update Batch Anime",
-            "defaultAction": {
-                "type": "message",
-                "label": "LATEST ANIME",
-                "text": "latest anime today"
-            },
-            "actions": [
-                {
-                    "type": "message",
-                    "label": "LATEST ANIME",
-                    "text": "latest anime today"
-                },
-                {
-                    "type": "message",
-                    "label": "RECOMMENDED ANIME",
-                    "text": "popular anime today"
-                },
-                {
-                    "type": "message",
-                    "label":"CATEGORY ANIME",
-                    "text": "choose category anime"
-                }
-            ]
-          }
-          ],
-          "imageAspectRatio": "rectangle",
-          "imageSize": "cover"
-      }
-    }
-    
-        return client.replyMessage(event.replyToken, anime);
-        
-        break;
-
-    case 'show menu':
-        menu();
-        break;
-      
-    case 'who am i':
-      var id = event.source.userId;
-      var push = client.getProfile(id).then((profil)=> {
-        replyText(event.replyToken,`NAME: ${profil.displayName} \n USER ID: ${profil.userId} \n IMAGE: ${profil.pictureUrl} \n STATUS: ${profil.statusMessage}`);
-      })
-      break
-      
-    default: 
-}
-        
-  ///
-  
-  
-  if (event.message.text.toLowerCase() === 'who febrian'){
-        const answer = {
+    case 'who febrian':
+      const febri = {
           "type": "template",
           "altText": "Febrian Dwi Putra is humble people with skill programing and design",
           "template": {
@@ -425,17 +395,22 @@ const replyText = (token, texts) => {
             "actions": [
               {
                 "type": "uri",
-                "label": "Facebook",
+                "label": "MY FACEBOOK",
                 "uri": "https://www.facebook.com/febri.krn"
               },
               {
                 "type": "uri",
-                "label": "Linkedin",
+                "label": "MY LINKEDIN",
                 "uri": "https://www.linkedin.com/in/febrian-dwi-putra-026446163"
               },
               { "type": "uri",
-                "label": "Github",
+                "label": "MY GITHUB",
                 "uri": "https://github.com/febritecno"
+              },
+              {
+                "type": "message",
+                "label":"RETURN TO MENU",
+                "text": "show menu"
               }
             ],
             "thumbnailImageUrl": "https://avatars2.githubusercontent.com/u/9696688?s=460&v=4",
@@ -443,10 +418,12 @@ const replyText = (token, texts) => {
             "text": "People can solve and make your dream realise"
           }
         };
-        return client.replyMessage(event.replyToken, answer);
+        return client.replyMessage(event.replyToken, febri);
     
-  }else if (event.message.text.toLowerCase() === "help"){
-        const answer = {
+      break;
+      
+    case 'help':
+        const help = {
           "type": "template",
           "altText": "help about bot",
           "template": {
@@ -455,7 +432,12 @@ const replyText = (token, texts) => {
               {
                 "type": "message",
                 "label": "CLICK HERE",
-                "text": "what can you do ?"
+                "text": "what can you do"
+              },
+              {
+                "type": "message",
+                "label":"RETURN TO MENU",
+                "text": "show menu"
               }
             ],
             "thumbnailImageUrl": "https://i.imgur.com/Mo2OOwm.png",
@@ -464,21 +446,77 @@ const replyText = (token, texts) => {
           }
         };
     
-        return client.replyMessage(event.replyToken, answer);
+        return client.replyMessage(event.replyToken, help);
     
-    }else if (event.message.text.toLowerCase() === "what can you do ?"){
-        const answer = {
+      break;
+    
+    case 'what can you do':
+      const hasana = {
           "type": "text",
-          "text": "you can visit https://skills.susi.ai/, then you look example reference of my skill. look skill and let's try chat to me."
+          "text": "hasana bot is a bot messager from line messager platform, this bot can answer your chat with susi.ai service and use ability for crawl."
+        };
+      const coba = {
+          "type": "text",
+          "text": "try the ability, choose and try typing some skill .. [wikipedia tentang 'isi sendiri'],[how to cook mie],[when it will rain]"
+        };
+      const answer = {
+          "type": "text",
+          "text": "you can click button on bottom, then you look more example reference of skill this bot. read and let's try to chat."
+        };
+      const button = {
+          "type": "template",
+          "altText": "help",
+          "template": {
+            "type": "buttons",
+            "actions": [
+              {
+                "type": "uri",
+                "label": "VISIT WEBSITE",
+                "uri": "https://skills.susi.ai/"
+              },
+              {
+                "type": "message",
+                "label":"RETURN TO MENU",
+                "text": "show menu"
+              }
+            ],
+            "thumbnailImageUrl": "https://pbs.twimg.com/profile_images/848872694833479680/bEzTC-gn.jpg",
+            "title": "What's Website Skill ?",
+            "text": "a site that provides examples of using this AI vocabulary"
+          }
         };
         const answer1 = {
           "type": "sticker",
           "packageId": "1",
           "stickerId": "4"
         };
-        return client.replyMessage(event.replyToken, [answer,answer1]);
+        return client.replyMessage(event.replyToken, [hasana,coba,answer,button,answer1]);
+      break;
+
+    case 'show menu':
+        menu();
+      break;
+      
+    case 'who am i':
+      var id = event.source.userId;
+      var push = client.getProfile(id).then((profil)=> {
+        replyText(event.replyToken,`NAME: ${profil.displayName} \n USER ID: ${profil.userId} \n IMAGE: ${profil.pictureUrl} \n STATUS: ${profil.statusMessage}`);
+      })
     
- } else if (event.message.text.toLowerCase() === "") {
+      break
+      
+    default: 
+}
+        
+  ///
+  
+  
+  
+  
+  
+  
+  
+  if (event.message.text.toLowerCase() === "start") {
 
    try{
         request(options1, function(error1, response1, body1) {
@@ -488,8 +526,12 @@ const replyText = (token, texts) => {
             // answer fetched from susi
             var ans = (JSON.parse(body1)).answers[0].actions[0].expression;
             const sampleQ = [{
-                    type: 'text',
-                    text: ans
+                  type: 'text',
+                  text: ans
+                },
+                {
+                  type: 'text',
+                  text: 'hey, you can typing word [ show menu ] to send carousel menu in this bot. Try it ...'
                 }]
               return client.replyMessage(event.replyToken, sampleQ);
         });
@@ -499,20 +541,157 @@ const replyText = (token, texts) => {
     }
    
    
-    } else {
+    }else if(event.message.text.toLowerCase() === "recommendations"){
+      request(server.recom,async function(er,req,bo){
+        try{
+        
+          if (er) throw new Error(er);    
+            var body=await (JSON.parse(bo));
+            var carousel =await [];
+            //var data =[];
+            for (var i = 1; i <= 9; i++) {
+                var title = await body[i].title;
+                var img = await body[i].img;
+                var link = await body[i].link;
+
+                 if (title.length >= 49) {
+                      title = title.substring(0, 50);
+                      title = title + "...";
+                  }
+
+                  /**data[i]= {
+                        type: 'text',
+                        text : title          
+
+                  }**/
+                  carousel[i] = {
+                          "thumbnailImageUrl": img,
+                          "imageBackgroundColor": "#FFFFFF",
+                          "title": "THE MOST WATCHED",
+                          "text": title,
+                          "defaultAction": {
+                                  "type": "uri",
+                                  "label": "DOWNLOAD NOW",
+                                  "uri": link
+                          },
+                          "actions": [
+                              {
+                                  "type": "uri",
+                                  "label": "DOWNLOAD NOW",
+                                  "uri": link
+                              },
+                              {
+                                  "type": "message",
+                                  "label":"RETURN TO MENU",
+                                  "text": "show menu"
+                              }
+                          ]
+                        };
+              }
+
+           //console.log([carousel[1],carousel[2],carousel[3]]);
+
+            //const text = [data[1],data[2],data[3],data[4],data[5],data[6]]
+
+            const recom = {
+                    "type": "template",
+                    "altText": "ANIME RECOMMENDED",
+                    "template": {
+                        "type": "carousel",
+                        "columns": [carousel[1],carousel[2],carousel[3],carousel[4],carousel[5],carousel[6],carousel[7],carousel[8],carousel[9]],
+                    "imageAspectRatio": "rectangle",
+                    "imageSize": "cover"
+                      }
+                   }
+
+             return client.replyMessage(event.replyToken,recom);
+            }catch(er){
+            console.log(er)
+              err();
+            }
+          })
+      
+    }else if(event.message.text.toLowerCase() === "anime"){
+      request('https://hasana.glitch.me/nime',async function(er1,req1,bo1){
+        try{
+        
+          if (er1) throw new Error(er1);    
+            var body=await (JSON.parse(bo1).splice(2,20));
+            var carousel =await [];
+            
+          for (var i = 1; i <= 11; i++) {
+                var title = await body[i].title;
+                var img = await body[i].img;
+                var desc = await body[i].desc;
+                var link = await body[i].link;
+
+                 if (title.length >= 36) {
+                      title = title.substring(0, 37);
+                      title = title + "...";
+                  }
+                 
+                  if (desc.length >= 49) {
+                      desc = desc.substring(0, 50);
+                      desc = desc + "...";
+                  }
+
+              carousel[i] = {
+                          "thumbnailImageUrl": img,
+                          "imageBackgroundColor": "#FFFFFF",
+                          "title": title,
+                          "text": desc,
+                          "defaultAction": {
+                                  "type": "uri",
+                                  "label": "DOWNLOAD NOW",
+                                  "uri": link
+                          },
+                          "actions": [
+                              {
+                                  "type": "uri",
+                                  "label": "DOWNLOAD NOW",
+                                  "uri": link
+                              },
+                              {
+                                  "type": "message",
+                                  "label":"RETURN TO MENU",
+                                  "text": "show menu"
+                              }
+                          ]
+                        };
+              }
+
+            const anime = {
+                    "type": "template",
+                    "altText": "anime bllb",
+                    "template": {
+                        "type": "carousel",
+                        "columns": [carousel[1],carousel[2],carousel[3],carousel[4],carousel[5],carousel[6],carousel[7],carousel[8],carousel[9],carousel[10]],
+                        "imageAspectRatio": "rectangle",
+                        "imageSize": "cover"
+                      }
+                   }
+
+             return client.replyMessage(event.replyToken,anime);
+          
+            }catch(er1){
+            console.log(er1)
+            err();
+            }
+          })       
+      }else{
         request(options1, async function(error1, response1, body1) {
-            if (error1) throw new Error(error1);
+        if (error1) throw new Error(error1);
           try {
             // answer fetched from susi
             var type = await (JSON.parse(body1)).answers[0].actions;
             var ans = await (JSON.parse(body1)).answers[0].actions[0].expression;
             
-          
-            if ( ((JSON.parse(body1)).answers[0].data[0].lon) || ((JSON.parse(body1)).answers[0].data[0].lat) ) {
-                var lat = JSON.parse(body1).answers[0].data[0].lat;
-                var lon = JSON.parse(body1).answers[0].data[0].lon;
-                var address = JSON.parse(body1).answers[0].data[0].locationInfo;
-                var title = JSON.parse(body1).answers[0].data[0][1];
+            if (((JSON.parse(body1)).answers[0].data[0].lon) || ((JSON.parse(body1)).answers[0].data[0].lat) ) {
+                var lat = await JSON.parse(body1).answers[0].data[0].lat;
+                var lon = await JSON.parse(body1).answers[0].data[0].lon;
+                var address = await JSON.parse(body1).answers[0].data[0].locationInfo;
+                var title = await JSON.parse(body1).answers[0].data[0][1]; //nunggu sampai janjinya ditepati kalau gak ya dilempar ke catch :'(
+                
                 const answer = {
                     type: "location",
                     title: title,
@@ -524,10 +703,10 @@ const replyText = (token, texts) => {
                 return client.replyMessage(event.replyToken, answer)
                 .catch((err) => {
                     console.log('Error - '+err);
-                });
-            } else if (JSON.parse(body1).answers[0].data[0].type === 'gif') {
-                let videoUrl = JSON.parse(body1).answers[0].data[0].v1.original.mp4;
-                let previewUrl = JSON.parse(body1).answers[0].data[0].images["480w_still"].url;
+                });   
+            }else if (JSON.parse(body1).answers[0].data[0].type === 'gif') {
+                let videoUrl = await JSON.parse(body1).answers[0].data[0].v1.original.mp4;
+                let previewUrl = await JSON.parse(body1).answers[0].data[0].images["480w_still"].url;
                 const answer = {
                     type: 'video',
                     originalContentUrl: videoUrl,
@@ -556,9 +735,9 @@ const replyText = (token, texts) => {
                 return client.replyMessage(event.replyToken, answer);
 
             } else if (type[0].type == "table") {
-                var data = JSON.parse(body1).answers[0].data;
-                var columns = type[0].columns;
-                var key = Object.keys(columns);
+                var data = await JSON.parse(body1).answers[0].data;
+                var columns = await type[0].columns;
+                var key = await Object.keys(columns);
                 var msg = [];
                 console.log(key);
 
@@ -616,7 +795,7 @@ const replyText = (token, texts) => {
                     },
                     {
                         "type": "template",
-                        "altText": "Web Search",
+                        "altText": "Web Search", // (XX) gagal parsing websearch , search for dog tampil duckduckgo carousel. sama lokasi gagal
                         "template": {
                             "type": "carousel",
                             "columns": [

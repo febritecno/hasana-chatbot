@@ -1,5 +1,5 @@
 'use strict';
-
+var cron = require('cron-scheduler');
 const line = require('@line/bot-sdk');
 const express = require('express');
 var xray = require('x-ray');
@@ -17,7 +17,6 @@ var s = require('./scrape'); //load scrape function target
 //var nime_recom  = require('./nime/nime_recom');
 //var nime_catagory  = require('./nime/nime_catagory');
 //
-
 //var word = require('./keyword');
 
 
@@ -374,20 +373,13 @@ const replyText = (token, texts) => {
       }
   /////////////////
   
-  
-    
-    
-    
-    
-    ///// BOT AREA HERE ------------------------------------
+///// BOT AREA HERE ------------------------------------
     
   
     if (event.type !== 'message' || event.message.type !== 'text') { // event -> array, type -> property pada object. sample object: {type: 'message'}
         // ignore non-text-message event
-        
         return Promise.resolve(null);
     }
-  
   
   var options1 = {
         method: 'GET',
@@ -398,12 +390,9 @@ const replyText = (token, texts) => {
         }
     };
   
-  
-  
-  
-  //// switch case handle static menu -------------------------
+//// switch case handle static menu -------------------------
  
-  switch(event.message.text.toLowerCase()) {
+switch(event.message.text.toLowerCase()) {
     
     case 'who febrian':
       const febri = {
@@ -432,9 +421,9 @@ const replyText = (token, texts) => {
                 "text": "show menu"
               }
             ],
-            "thumbnailImageUrl": "https://avatars2.githubusercontent.com/u/9696688?s=460&v=4",
-            "title": "Febrian Dwi Putra",
-            "text": "People can solve and make your dream realise"
+                "thumbnailImageUrl": "https://avatars2.githubusercontent.com/u/9696688?s=460&v=4",
+                "title": "Febrian Dwi Putra",
+                "text": "People can solve and make your dream realise"
           }
         };
         return client.replyMessage(event.replyToken, febri);
@@ -529,22 +518,12 @@ const replyText = (token, texts) => {
         
   ///////////
   
+/////// SERVICE BOT DENGAN PIHAK KETIGA/SCRAPE/API ------------
   
-  
-  
-  
-  
-  
-  /////// SERVICE BOT DENGAN PIHAK KETIGA/SCRAPE/API ------------
-  
-  
-  if (event.message.text.toLowerCase() === "start") {
-
+if (event.message.text.toLowerCase() === "start") {
    try{
         request(options1, function(error1, response1, body1) {
-          
             if (error1) throw new Error(error1);
-          
             // answer fetched from susi
             var ans = (JSON.parse(body1)).answers[0].actions[0].expression;
             const sampleQ = [{
@@ -780,7 +759,286 @@ const replyText = (token, texts) => {
              return client.replyMessage(event.replyToken,more_latest);
             
             })
+      }else if(event.message.text.toLowerCase() === "coupon today"){
+        request(server.diskon,function(er1,req1,bo1){
+          if (er1) throw new Error(er1);    
+            var body= (JSON.parse(bo1).splice(0,11));
+            var carousel = [];
+            
+          for (var i = 1; i <= 10; i++) {
+                var title = body[i].title;
+                var img =  body[i].img;
+                var coupon = body[i].coupon;
+
+                 if (title.length >= 49) {
+                      title = title.substring(0, 50);
+                      title = title + "...";
+                  }
       
+              carousel[i] = {
+                          "thumbnailImageUrl": img,
+                          "imageBackgroundColor": "#FFFFFF",
+                          "title": "LATEST COUPON CODE",
+                          "text": title,
+                          "defaultAction": {
+                                  "type": "uri",
+                                  "label": "ENROLL NOW",
+                                  "uri": coupon
+                          },
+                          "actions": [
+                              {
+                                  "type": "uri",
+                                  "label": "ENROLL NOW",
+                                  "uri": coupon
+                              },
+                              {
+                                  "type": "message",
+                                  "label":"RETURN TO MENU",
+                                  "text": "show menu"
+                              }
+                          ]
+                        };
+              }
+
+            const udemy = {
+                    "type": "template",
+                    "altText": "COUPON",
+                    "template": {
+                        "type": "carousel",
+                        "columns": [carousel[1],carousel[2],carousel[3],carousel[4],carousel[5],carousel[6],carousel[7],carousel[8],carousel[9],
+                                   {
+                                    "thumbnailImageUrl": "https://cdn.onlinewebfonts.com/svg/img_403004.png",
+                                    "imageBackgroundColor": "#B0BEC5",
+                                    "title": " ",
+                                    "text": " ",
+                                    "defaultAction": {
+                                            "type": "message",
+                                            "label": "CLICK HERE",
+                                            "text": "more coupon"
+                                    },
+                                    "actions": [
+                                        {
+                                            "type": "message",
+                                            "label": "LOAD MORE",
+                                            "text": "more coupon"
+                                        },
+                                        {
+                                            "type": "message",
+                                            "label":" ",
+                                            "text": " "
+                                        }
+                                    ]
+                                  }
+                                   ],
+                        "imageAspectRatio": "rectangle",
+                        "imageSize": "cover"
+                      }
+                   }
+
+             return client.replyMessage(event.replyToken,udemy);     
+           
+        })
+      
+      }else if(event.message.text.toLowerCase() === "more coupon"){
+          
+       request(server.diskon,function(er1,req1,bo1){
+          if (er1) throw new Error(er1);    
+            var body= (JSON.parse(bo1).splice(11,21));
+            var carousel = [];
+            
+          for (var i = 1; i <= 10; i++) {
+                var title = body[i].title;
+                var img =  body[i].img;
+                var coupon = body[i].coupon;
+
+                 if (title.length >= 49) {
+                      title = title.substring(0, 50);
+                      title = title + "...";
+                  }
+      
+              carousel[i] = {
+                          "thumbnailImageUrl": img,
+                          "imageBackgroundColor": "#FFFFFF",
+                          "title": "LATEST COUPON CODE",
+                          "text": title,
+                          "defaultAction": {
+                                  "type": "uri",
+                                  "label": "ENROLL NOW",
+                                  "uri": coupon
+                          },
+                          "actions": [
+                              {
+                                  "type": "uri",
+                                  "label": "ENROLL NOW",
+                                  "uri": coupon
+                              },
+                              {
+                                  "type": "message",
+                                  "label":"RETURN TO MENU",
+                                  "text": "show menu"
+                              }
+                          ]
+                        };
+              }
+
+            const more_udemy = {
+                    "type": "template",
+                    "altText": "COUPON",
+                    "template": {
+                        "type": "carousel",
+                        "columns": [carousel[1],carousel[2],carousel[3],carousel[4],carousel[5],carousel[6],carousel[7],carousel[8],carousel[9],carousel[10]],
+                        "imageAspectRatio": "rectangle",
+                        "imageSize": "cover"
+                      }
+                   }
+
+             return client.replyMessage(event.replyToken,more_udemy);     
+           
+        })         
+          
+    }else if(event.message.text.toLowerCase() === "smartybro today"){
+        request(server.free,function(er1,req1,bo1){
+          if (er1) throw new Error(er1);    
+            var body= (JSON.parse(bo1).splice(0,11));
+            var carousel = [];
+            
+          for (var i = 1; i <= 10; i++) {
+                var title = body[i].title;
+                var img =  body[i].img;
+                var coupon = body[i].coupon;
+
+                 if (title.length >= 49) {
+                      title = title.substring(0, 50);
+                      title = title + "...";
+                  }
+      
+              carousel[i] = {
+                          "thumbnailImageUrl": img,
+                          "imageBackgroundColor": "#FFFFFF",
+                          "title": "LATEST COUPON CODE",
+                          "text": title,
+                          "defaultAction": {
+                                  "type": "uri",
+                                  "label": "DETAILS",
+                                  "uri": coupon
+                          },
+                          "actions": [
+                              {
+                                  "type": "uri",
+                                  "label": "DETAILS",
+                                  "uri": coupon
+                              },
+                              {
+                                  "type": "message",
+                                  "label":"RETURN TO MENU",
+                                  "text": "show menu"
+                              }
+                          ]
+                        };
+              }
+
+            const smartybro = {
+                    "type": "template",
+                    "altText": "COUPON",
+                    "template": {
+                        "type": "carousel",
+                        "columns": [carousel[1],carousel[2],carousel[3],carousel[4],carousel[5],carousel[6],carousel[7],carousel[8],carousel[9],
+                                   {
+                                    "thumbnailImageUrl": "https://cdn.onlinewebfonts.com/svg/img_403004.png",
+                                    "imageBackgroundColor": "#B0BEC5",
+                                    "title": " ",
+                                    "text": " ",
+                                    "defaultAction": {
+                                            "type": "message",
+                                            "label": "CLICK HERE",
+                                            "text": "more coupon"
+                                    },
+                                    "actions": [
+                                        {
+                                            "type": "message",
+                                            "label": "LOAD MORE",
+                                            "text": "more smartybro"
+                                        },
+                                        {
+                                            "type": "message",
+                                            "label":" ",
+                                            "text": " "
+                                        }
+                                    ]
+                                  }
+                                   ],
+                        "imageAspectRatio": "rectangle",
+                        "imageSize": "cover"
+                      }
+                   }
+             
+                cron({ on: '0 6 * * *' }, function () { //menambah cron job
+                client.replyMessage(event.replyToken,smartybro); 
+                })
+          
+             return client.replyMessage(event.replyToken,smartybro);     
+           
+        })
+      
+      }else if(event.message.text.toLowerCase() === "more smartybro"){
+          
+       request(server.free,function(er1,req1,bo1){
+          if (er1) throw new Error(er1);    
+            var body= (JSON.parse(bo1).splice(11,21));
+            var carousel = [];
+            
+          for (var i = 1; i <= 10; i++) {
+                var title = body[i].title;
+                var img =  body[i].img;
+                var coupon = body[i].coupon;
+
+                 if (title.length >= 49) {
+                      title = title.substring(0, 50);
+                      title = title + "...";
+                  }
+      
+              carousel[i] = {
+                          "thumbnailImageUrl": img,
+                          "imageBackgroundColor": "#FFFFFF",
+                          "title": "LATEST COUPON CODE",
+                          "text": title,
+                          "defaultAction": {
+                                  "type": "uri",
+                                  "label": "DETAILS",
+                                  "uri": coupon
+                          },
+                          "actions": [
+                              {
+                                  "type": "uri",
+                                  "label": "DETAILS",
+                                  "uri": coupon
+                              },
+                              {
+                                  "type": "message",
+                                  "label":"RETURN TO MENU",
+                                  "text": "show menu"
+                              }
+                          ]
+                        };
+              }
+
+            const more_smartybro = {
+                    "type": "template",
+                    "altText": "COUPON",
+                    "template": {
+                        "type": "carousel",
+                        "columns": [carousel[1],carousel[2],carousel[3],carousel[4],carousel[5],carousel[6],carousel[7],carousel[8],carousel[9],carousel[10]],
+                        "imageAspectRatio": "rectangle",
+                        "imageSize": "cover"
+                      }
+                   }
+
+             return client.replyMessage(event.replyToken,more_smartybro);     
+           
+        })      
+        
+        
+    
       }else{
         request(options1, async function(error1, response1, body1) {
         if (error1) throw new Error(error1);

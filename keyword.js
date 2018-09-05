@@ -1,3 +1,5 @@
+//      } else if(event.message.text.toLowerCase() === "more latest anime"){
+
 // berisi kata kunci atau menyimpan kata
 
 

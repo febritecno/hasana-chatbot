@@ -414,7 +414,8 @@ var err = () => {
         // ignore non-text-message event
         //return Promise.resolve(null);
         // callback jika dikirim tidak tipe pesan
-        return client.replyMessage(event.replyToken, stickerAnswers());
+        const sticker = stickerAnswers();
+        return client.replyMessage(event.replyToken, sticker);
     }
   
   var options1 = {

@@ -50,21 +50,26 @@ app.post('/webhook', line.middleware(config), (req, res) => {
 
 setInterval(function() {
         https.get(process.env.URL) || http.get(process.env.URL)
-    }, 600000); // server uptime every 10 minutes refresh.
+    }, 600000); // server refresh every 10 minutes.
 
 
-// global Function pada router dan bot
 
-function isNumber(n){   //cek apakah type number
+
+// GLOBAL FUNCTION UNTUK BOT ++++++++++++++++
+
+
+//cek apakah type number
+function isNumber(n){   
   return !isNaN(parseFloat(n)) && !isNaN(n - 0) 
 }
 
 
-function acak(min, max){ // untuk generate acak angka
+// untuk generate acak angka
+function acak(min, max){ 
   return Math.floor(Math.random() * (max - min + 1)) + min;        
 }
 
-
+// handle addmore tapi untuk endpoint catagory
 var addmore_category = async (url,adapter) => {
   app.get(url+'/:kategori'+'/more/:num',async function(req,res){
      
@@ -83,35 +88,31 @@ var addmore_category = async (url,adapter) => {
   })      
 }
 
-var addmore = async (url,adapter) => {
-  
+
+
+// function untuk menangani router addmore
+var addmore = async (url,adapter) => {  
   app.get(url+'/more/:num',async function(req,res){
-   
     var display = await req.params.num; //untuk manipulasi parameter num
-
+    
     if (await isNumber(display) !== true){
-
         res.json({
                   status: '200',
                   message: 'use number for paramater to show data example '+url+'/more/'+':number',
                   code: 'error'
                  });
-    }else{
-
-        await adapter(res,display);
-
+      
+    }else{  
+      await adapter(res,display);
+      
     }
-
-})
-  
+  })
 }
 
 
 
 // router middleware
-
-
-app.use(c); //use cached middleware on router
+app.use(c); //use cached middleware on router express
 
 
 //ROUTER ===================
@@ -119,6 +120,7 @@ app.use(c); //use cached middleware on router
 app.get('/nime',function (req, res) { //index drivenime
   s.nime(res,1); // limit sesuai dengan jumlah item perhalaman
 })
+
 app.get('/nime/:kategori',async function (req, res) { //katagori drivenime
   var category = await req.params.kategori;
   s.nime_katagori(res,category);
@@ -150,7 +152,7 @@ app.get('/ebook',function (req, res) { // index free ebook all programing
   s.ebook(res);
 })
   
-app.get('/ebook/download',function (req, res) { // index free ebook all programing
+app.get('/ebook/download',function (req, res) { // download all ebook to zip, belum jadi
   res.zip([
     { path: '/path/to/file1.name', name: '/path/in/zip/file1.name' },
     { path: '/path/to/file2.name', name: 'file2.name' }
@@ -162,6 +164,7 @@ app.get('/ebook/json/:name',async function (req, res) { // getpage or detail pag
   s.getpage(res,name);
 })
 
+/// fungsi router untuk handle endpoint nambah jumlah item diload pada json
 addmore('/recom',s.recom);
 addmore('/free',s.smartybro);
 addmore('/diskon',s.diskon);
@@ -177,6 +180,72 @@ addmore_category('/free',s.smartybro_katagori);
 
 async function handleEvent(event) {
 
+///// GLOBAL FUNCTION UNTUK BOT ===============
+    
+const stickerAnswers = () => { // fungsi mengolah respon bot dengan sticker by febrian dwi putra
+  
+    const random_sticker_answers = [{  /// hahah, random stiker dengan fungsi acak yang aku buat.
+          "type": "sticker",
+          "packageId": "1",
+          "stickerId": acak(100,118)
+        },
+        {
+          "type": "sticker",
+          "packageId": "1",
+          "stickerId": acak(1,17)
+        },
+        {
+          "type": "sticker",
+          "packageId": "1",
+          "stickerId": acak(119,139)
+        },
+        {
+          "type": "sticker",
+          "packageId": "1",
+          "stickerId": acak(401,430)
+        },
+        {
+          "type": "sticker",
+          "packageId": "1",
+          "stickerId": acak(18,20)
+        },
+        {
+          "type": "sticker",
+          "packageId": "2",
+          "stickerId": acak(22,47)
+        },
+        {
+          "type": "sticker",
+          "packageId": "2",
+          "stickerId": acak(140,179)
+        },
+        {
+          "type": "sticker",
+          "packageId": "2",
+          "stickerId": acak(501,527)
+        },
+        {
+          "type": "sticker",
+          "packageId": "3",
+          "stickerId": acak(180,259)
+        },
+        {
+          "type": "sticker",
+          "packageId": "4",
+          "stickerId": acak(260,307)
+        },
+        {
+          "type": "sticker",
+          "packageId": "4",
+          "stickerId": acak(601,632)
+        }
+        ]
+    
+    const random_array = random_sticker_answers[Math.floor(Math.random() * random_sticker_answers.length)]; // pick one item by index[i] from array.
+  
+  return random_array
+}
+  
   
   // simple reply function
 const replyText = (token, texts) => {
@@ -186,6 +255,19 @@ const replyText = (token, texts) => {
     texts.map((text) => ({ type: 'text', text }))
   );
 };
+  
+// fungsi ini untuk handle try{}..catch(e){} / ().then() .. ().catch() / ().resolve().. ().reject() callback error bot
+var err = () => {
+  if (typeof(type) == 'undefined' || typeof(data) == 'undefined' || typeof(actions) == 'undefined'){
+    const answer = {
+      "type": "text",
+      "text": "ouh, i'm don't know what your say. "
+    };
+  return client.replyMessage(event.replyToken, [answer,stickerAnswers()]);
+  }
+}
+  
+  
   
   // menu utama di load disini
     var menu = () => {
@@ -318,56 +400,21 @@ const replyText = (token, texts) => {
     
     }
   
-    var err = () => {
-       if (typeof(type) == 'undefined' || typeof(data) == 'undefined' || typeof(actions) == 'undefined'){
-          const answer = {
-            "type": "text",
-            "text": "ouh, i'm don't know what your say my lord. maybe, i will send menu to help you. keep calm :)"
-          };
-          const answer1 = {
-            "type": "sticker",
-            "packageId": "1",
-            "stickerId": "3"
-          };
-               
-          const menu = { 
-            "type": "template",
-            "altText": "CHOOSE YOUR MENU",
-            "template": {
-              "type": "buttons",
-              "actions": [
-                {
-                  "type": "message",
-                  "label": "CLICK HERE",
-                  "text": "show menu"
-                }
-              ],
-                  "thumbnailImageUrl": "https://i.imgur.com/lGtnHm0.jpg",
-                  "title": "Want to go to the menu ?",
-                  "text": "dont't worry, i'm always stay with you."
-            }     
-          }
-                return client.replyMessage(event.replyToken, [answer1,answer,menu]);
-        }
-      }
+        
+
   /////////////////
   
+  ///// END GLOBAL FUNCTION UNTUK BOT ===============
     
     
 ///// BOT AREA HERE ------------------------------------
     
-  
-  if (event.type !== 'message' || event.message.type !== 'text') { // event -> array, type -> property pada object. sample object: {type: 'message'}
+  // event -> array, type -> property pada object. sample object: {type: 'message'}
+  if (event.type !== 'message' || event.message.type !== 'text') {     
         // ignore non-text-message event
         //return Promise.resolve(null);
-    
-        const random_sticker_answers = {  /// hahah, random stiker dengan fungsi yang aku buat.
-          "type": "sticker",
-          "packageId": acak(1,4),
-          "stickerId": acak(1,632)
-        };
-     
-        return client.replyMessage(event.replyToken, random_sticker_answers);
+        // callback jika dikirim tidak tipe pesan
+        return client.replyMessage(event.replyToken, stickerAnswers());
     }
   
   var options1 = {
@@ -379,10 +426,10 @@ const replyText = (token, texts) => {
         }
     };
   
-switch(event.message.text.toLowerCase()) {
   
 //// switch case handle static fitur non server -------------------------
-   
+switch(event.message.text.toLowerCase()) {
+    
     case 'who febrian':
       const febri = {
           "type": "template",
@@ -411,7 +458,6 @@ switch(event.message.text.toLowerCase()) {
           }
         };
         return client.replyMessage(event.replyToken, febri);
-    
       break;
       
     case 'help':
@@ -439,7 +485,6 @@ switch(event.message.text.toLowerCase()) {
         };
     
         return client.replyMessage(event.replyToken, help);
-    
       break;
     
     case 'what can you do':
@@ -477,6 +522,7 @@ switch(event.message.text.toLowerCase()) {
             "text": "a site that provides examples of using this AI vocabulary"
           }
         };
+        
         const answer1 = {
           "type": "sticker",
           "packageId": "1",
@@ -491,7 +537,6 @@ switch(event.message.text.toLowerCase()) {
       
     case 'catatan':
         replyText(event.replyToken,`TEMPAT DOWNLOAD COURSE https://www.salewebdesign.com/ ATAU http://freecoursesonline.us isinya kursus udemy`);
-    
       break
     
     case 'who am i':
@@ -499,7 +544,6 @@ switch(event.message.text.toLowerCase()) {
       var push = client.getProfile(id).then((profil)=> {
         replyText(event.replyToken,`NAME: ${profil.displayName} \n USER ID: ${profil.userId} \n IMAGE: ${profil.pictureUrl} \n STATUS: ${profil.statusMessage}`);
       })
-    
       break
       
     default: 
@@ -507,7 +551,10 @@ switch(event.message.text.toLowerCase()) {
         
   ///////////
   
-/////// SERVICE BOT DENGAN PIHAK KETIGA/SCRAPE/API ------------
+  
+
+  
+/////// SERVICE BOT DENGAN PIHAK KETIGA/CRAWL WEBSITE/JSON/REALTIME DATA OBJECT ------------
 
 if (event.message.text.toLowerCase() === "start") {
         request(options1, function(error1, response1, body1) {

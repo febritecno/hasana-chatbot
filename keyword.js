@@ -70,3 +70,55 @@ module.exports = {store_febri,store_skill,store_help,elink}
 //var nime_catagory  = require('./nime/nime_catagory');
 //
 //var word = require('./keyword');
+
+
+
+
+
+    
+//     handle error function callback
+//     var err = () => {
+//        if (typeof(type) == 'undefined' || typeof(data) == 'undefined' || typeof(actions) == 'undefined'){
+//           const answer = {
+//             "type": "text",
+//             "text": "ouh, i'm don't know what your say my lord. maybe, i will send menu to help you. keep calm :)"
+//           };
+//           const answer1 = {
+//             "type": "sticker",
+//             "packageId": "1",
+//             "stickerId": "3"
+//           };
+               
+//           const menu = { 
+//             "type": "template",
+//             "altText": "CHOOSE YOUR MENU",
+//             "template": {
+//               "type": "buttons",
+//               "actions": [
+//                 {
+//                   "type": "message",
+//                   "label": "CLICK HERE",
+//                   "text": "show menu"
+//                 }
+//               ],
+//                   "thumbnailImageUrl": "https://i.imgur.com/lGtnHm0.jpg",
+//                   "title": "Want to go to the menu ?",
+//                   "text": "dont't worry, i'm always stay with you."
+//             }     
+//           }
+//                 return client.replyMessage(event.replyToken, [answer1,answer,menu]);
+//         }
+//       }
+    
+    
+    
+     var err = () => {
+       if (typeof(type) == 'undefined' || typeof(data) == 'undefined' || typeof(actions) == 'undefined'){
+          const answer = {
+            "type": "text",
+            "text": "ouh, i'm don't know what your say. "
+          };
+          const answer1 = 
+                return client.replyMessage(event.replyToken, [answer1,answer,menu]);
+        }
+      }

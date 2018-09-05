@@ -279,7 +279,7 @@ var err = () => {
                 "type": "carousel",
                 "columns": [
                   {
-                  "thumbnailImageUrl": "https://i.imgur.com/A1xzRuo.png",
+                  "thumbnailImageUrl": "https://i.imgur.com/lGtnHm0.jpg",
                   "imageBackgroundColor": "#FFFFFF",
                   "title": "Batch Anime",
                   "text": "Latest Update Batch Anime",

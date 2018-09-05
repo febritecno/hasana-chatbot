@@ -24,6 +24,7 @@ const nime_katagori = {
     url: 'https://hasana.glitch.me/nime'
 }
 
+
 //coupon ilearning
 const diskon = {
     method: 'GET',
@@ -34,6 +35,8 @@ const diskon_catagory = {
    method: 'GET',
     url: 'https://hasana.glitch.me/diskon'
 }
+
+
 
 
 //coupon smartybro
@@ -47,6 +50,8 @@ const free_catagory = {
     url: 'https://hasana.glitch.me/free'
 }
 
+
+// eboo goalkicker
 var ebook = {
    method: 'GET',
    url: 'https://hasana.glitch.me/ebook'

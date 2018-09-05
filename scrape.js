@@ -150,7 +150,7 @@ try {
   }
 
 
-}catch(e){
+}catch(e){ // handle callback with throw new Error/ catch error.
   console.log(e);
 }
 

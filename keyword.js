@@ -111,14 +111,3 @@ module.exports = {store_febri,store_skill,store_help,elink}
 //       }
     
     
-    
-     var err = () => {
-       if (typeof(type) == 'undefined' || typeof(data) == 'undefined' || typeof(actions) == 'undefined'){
-          const answer = {
-            "type": "text",
-            "text": "ouh, i'm don't know what your say. "
-          };
-          const answer1 = 
-                return client.replyMessage(event.replyToken, [answer1,answer,menu]);
-        }
-      }

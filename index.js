@@ -12,14 +12,6 @@ var server  = require('./server-config');
 
 var s = require('./scrape'); //load scrape function target
 
-// if else service
-//var nime_latest  = require('./nime/nime_latest');
-//var nime_recom  = require('./nime/nime_recom');
-//var nime_catagory  = require('./nime/nime_catagory');
-//
-//var word = require('./keyword');
-
-
 // line limit 10 item pada tab gulir,50 karakter pada text dan 40 karakter pada title,
 //jika error saat parse respon 404 bearti ada yang melebihi limit atau property tidak sesuai aturan line.
 
@@ -189,34 +181,6 @@ const replyText = (token, texts) => {
             "template": {
                 "type": "carousel",
                 "columns": [
-                {
-                  "thumbnailImageUrl": "https://news.bitcoin.com/wp-content/uploads/2018/04/bitcoin-trading-bot.jpg",
-                  "imageBackgroundColor": "#FFFFFF",
-                  "title": "Hasana Menu",
-                  "text": "choose your favorite menu",
-                  "defaultAction": {
-                      "type": "message",
-                      "label": "About Developer",
-                      "text": "who febrian"
-                  },
-                  "actions": [
-                      {
-                          "type": "message",
-                          "label": "HELP!",
-                          "text": "help"
-                      },
-                      {
-                          "type": "uri",
-                          "label": "ABOUT BOT SKILL",
-                          "uri": "https://skills.susi.ai"
-                      },
-                      {
-                          "type": "message",
-                          "label":"ABOUT DEVELOPER",
-                          "text": "who febrian"
-                      }
-                  ]
-                },
                   {
                   "thumbnailImageUrl": "https://i.imgur.com/A1xzRuo.png",
                   "imageBackgroundColor": "#FFFFFF",
@@ -519,7 +483,7 @@ switch(event.message.text.toLowerCase()) {
   ///////////
   
 /////// SERVICE BOT DENGAN PIHAK KETIGA/SCRAPE/API ------------
-  
+
 if (event.message.text.toLowerCase() === "start") {
    try{
         request(options1, function(error1, response1, body1) {
@@ -972,7 +936,7 @@ if (event.message.text.toLowerCase() === "start") {
                       }
                    }
              
-                cron({ on: '0 6 * * *' }, function () { //menambah cron job
+                cron({ timezone: 'Asia/Jakarta',on: '0 6 * * *' }, function () { //menambah cron job
                 client.replyMessage(event.replyToken,smartybro); 
                 })
           
@@ -1036,9 +1000,7 @@ if (event.message.text.toLowerCase() === "start") {
              return client.replyMessage(event.replyToken,more_smartybro);     
            
         })      
-        
-        
-    
+     
       }else{
         request(options1, async function(error1, response1, body1) {
         if (error1) throw new Error(error1);

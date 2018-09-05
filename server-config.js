@@ -44,7 +44,12 @@ const free_catagory = {
     url: 'https://hasana.glitch.me/free'
 }
 
+var get_ebook = (name) => {
+   const ebook = {
+   method: 'GET',
+   url: 'https://hasana.glitch.me/ebook/'+name
+   } 
+}
 
 
-
-module.exports = {recom,nime,nime_katagori,diskon,diskon_catagory,free,free_catagory}
+module.exports = {recom,nime,nime_katagori,diskon,diskon_catagory,free,free_catagory,get_ebook}

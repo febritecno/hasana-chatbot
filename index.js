@@ -6,6 +6,7 @@ const express = require('express');
 var xray = require('x-ray');
 var request = require('request');
 var http = require('http');
+var https = require("https");
 var apicache = require('apicache');
 var zip = require('express-zip');
 
@@ -47,35 +48,39 @@ app.post('/webhook', line.middleware(config), (req, res) => {
 });
 
 
+setInterval(function() {
+        https.get(process.env.URL) || http.get(process.env.URL)
+    }, 600000); // server uptime every 10 minutes refresh.
 
 
-// Function router
+// global Function pada router dan bot
 
 function isNumber(n){   //cek apakah type number
   return !isNaN(parseFloat(n)) && !isNaN(n - 0) 
 }
 
+
+function acak(min, max){ // untuk generate acak angka
+  return Math.floor(Math.random() * (max - min + 1)) + min;        
+}
+
+
 var addmore_category = async (url,adapter) => {
-  
   app.get(url+'/:kategori'+'/more/:num',async function(req,res){
-   
-   function isNumber(n){  return !isNaN(parseFloat(n)) && !isNaN(n - 0) }
-   
-    var num = await req.params.num; //untuk manipulasi parameter jumlah num
+     
+    function isNumber(n){  return !isNaN(parseFloat(n)) && !isNaN(n - 0) }
+        
+    var num = await req.params.num; //untuk manipulasi parameter jumlah num    
     var category = await req.params.kategori;
 
+            
     if (await isNumber(num) !== true){
-
-        res.json({status: '200',message: 'use number for paramater to show data example '+url+'/more/'+':number',code: 'error'});
-
+      res.json({status: '200',message: 'use number for paramater to show data example '+url+'/more/'+':number',code: 'error'});  
     }else{
-
-        await adapter(res,category,num);
-
+      await adapter(res,category,num);        
     }
-
-})
-  
+          
+  })      
 }
 
 var addmore = async (url,adapter) => {
@@ -103,7 +108,7 @@ var addmore = async (url,adapter) => {
 
 
 
-// router
+// router middleware
 
 
 app.use(c); //use cached middleware on router
@@ -168,11 +173,11 @@ addmore_category('/free',s.smartybro_katagori);
 
 
 
-
-
 // BOT AREA ===============================================
 
 async function handleEvent(event) {
+
+  
   // simple reply function
 const replyText = (token, texts) => {
   texts = Array.isArray(texts) ? texts : [texts];
@@ -352,9 +357,17 @@ const replyText = (token, texts) => {
 ///// BOT AREA HERE ------------------------------------
     
   
-    if (event.type !== 'message' || event.message.type !== 'text') { // event -> array, type -> property pada object. sample object: {type: 'message'}
+  if (event.type !== 'message' || event.message.type !== 'text') { // event -> array, type -> property pada object. sample object: {type: 'message'}
         // ignore non-text-message event
-        return Promise.resolve(null);
+        //return Promise.resolve(null);
+    
+        const random_sticker_answers = {  /// hahah, random stiker dengan fungsi yang aku buat.
+          "type": "sticker",
+          "packageId": acak(1,4),
+          "stickerId": acak(1,632)
+        };
+     
+        return client.replyMessage(event.replyToken, random_sticker_answers);
     }
   
   var options1 = {
@@ -1133,9 +1146,6 @@ if (event.message.text.toLowerCase() === "start") {
       request(server.ebook,async function(er1,req1,bo1){
         try{
           if (er1) throw new Error(er1);
-            var acak = await function getRandomInt(min, max) {
-                return Math.floor(Math.random() * (max - min + 1)) + min;
-            }
             var body= await (JSON.parse(bo1).splice(acak(1,30),acak(31,48)).reverse())
             var carousel = await [];
           for (var i = 1; i <= 11; i++) {

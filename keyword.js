@@ -1,3 +1,5 @@
+// file ini file sampah. gk kepakai...... wkkwkwk
+
 //      } else if(event.message.text.toLowerCase() === "more latest anime"){
 
 

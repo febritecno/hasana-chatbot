@@ -1,3 +1,6 @@
+// file ini di gunakan untuk penyimpanan global url target request
+
+
 'use strict';
 
 const line = require('@line/bot-sdk');

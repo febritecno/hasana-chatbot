@@ -1,16 +1,17 @@
 'use strict';
-var cron = require('cron-scheduler');
+
+const cron = require('cron-scheduler');
 const line = require('@line/bot-sdk');
 const express = require('express');
 var xray = require('x-ray');
 var request = require('request');
 var http = require('http');
 var apicache = require('apicache');
+var zip = require('express-zip');
 
+var server  = require('./server-config'); //load request url object
 
-var server  = require('./server-config');
-
-var s = require('./scrape'); //load scrape function target
+var s = require('./scrape'); //load scrape function
 
 // line limit 10 item pada tab gulir,50 karakter pada text dan 40 karakter pada title,
 //jika error saat parse respon 404 bearti ada yang melebihi limit atau property tidak sesuai aturan line.
@@ -31,8 +32,8 @@ const client = new line.Client(config);
 // about Express itself: https://expressjs.com/
 const app = express();
 
-var x=xray(); //scraper
-var c=apicache.middleware('1 hour'); //cached middleware
+const x=xray(); //scraper
+const c=apicache.middleware('1 hour'); //cached middleware
 
 // register a webhook handler with middleware
 app.post('/webhook', line.middleware(config), (req, res) => {
@@ -107,6 +108,9 @@ var addmore = async (url,adapter) => {
 
 app.use(c); //use cached middleware on router
 
+
+//ROUTER ===================
+
 app.get('/nime',function (req, res) { //index drivenime
   s.nime(res,1); // limit sesuai dengan jumlah item perhalaman
 })
@@ -132,18 +136,23 @@ app.get('/diskon',function (req, res) { //index kupon udemy smartybro
   s.diskon(res,1);
 })
 
-
 app.get('/diskon/:kategori',async function (req, res) { //katagori kupon udemy smartybro
   var category = await req.params.kategori;
   s.diskon_katagori(res,category,1);
 })
 
-
 app.get('/ebook',function (req, res) { // index free ebook all programing
   s.ebook(res);
 })
   
-app.get('/ebook/:name',async function (req, res) { // getpage or detail page for download ebook
+app.get('/ebook/download',function (req, res) { // index free ebook all programing
+  res.zip([
+    { path: '/path/to/file1.name', name: '/path/in/zip/file1.name' },
+    { path: '/path/to/file2.name', name: 'file2.name' }
+  ]);
+})
+
+app.get('/ebook/json/:name',async function (req, res) { // getpage or detail page for download ebook
   var name = await req.params.name;
   s.getpage(res,name);
 })
@@ -159,7 +168,9 @@ addmore_category('/free',s.smartybro_katagori);
 
 
 
-// event handler area bot line
+
+
+// BOT AREA ===============================================
 
 async function handleEvent(event) {
   // simple reply function
@@ -170,8 +181,7 @@ const replyText = (token, texts) => {
     texts.map((text) => ({ type: 'text', text }))
   );
 };
-
-    
+  
   // menu utama di load disini
     var menu = () => {
     
@@ -337,6 +347,8 @@ const replyText = (token, texts) => {
       }
   /////////////////
   
+    
+    
 ///// BOT AREA HERE ------------------------------------
     
   
@@ -354,10 +366,10 @@ const replyText = (token, texts) => {
         }
     };
   
-//// switch case handle static menu -------------------------
- 
 switch(event.message.text.toLowerCase()) {
-    
+  
+//// switch case handle static fitur non server -------------------------
+   
     case 'who febrian':
       const febri = {
           "type": "template",
@@ -367,27 +379,22 @@ switch(event.message.text.toLowerCase()) {
             "actions": [
               {
                 "type": "uri",
-                "label": "MY FACEBOOK",
+                "label": "FACEBOOK ACCOUNT",
                 "uri": "https://www.facebook.com/febri.krn"
               },
               {
                 "type": "uri",
-                "label": "MY LINKEDIN",
+                "label": "LINKEDIN ACCOUNT",
                 "uri": "https://www.linkedin.com/in/febrian-dwi-putra-026446163"
               },
               { "type": "uri",
-                "label": "MY GITHUB",
+                "label": "GITHUB ACCOUNT",
                 "uri": "https://github.com/febritecno"
-              },
-              {
-                "type": "message",
-                "label":"RETURN TO MENU",
-                "text": "show menu"
               }
             ],
                 "thumbnailImageUrl": "https://avatars2.githubusercontent.com/u/9696688?s=460&v=4",
                 "title": "Febrian Dwi Putra",
-                "text": "People can solve and make your dream realise"
+                "text": "Someone who likes in front of a laptop all day for 24 hours"
           }
         };
         return client.replyMessage(event.replyToken, febri);
@@ -469,6 +476,11 @@ switch(event.message.text.toLowerCase()) {
         menu();
       break;
       
+    case 'catatan':
+        replyText(event.replyToken,`TEMPAT DOWNLOAD COURSE https://www.salewebdesign.com/ ATAU http://freecoursesonline.us isinya kursus udemy`);
+    
+      break
+    
     case 'who am i':
       var id = event.source.userId;
       var push = client.getProfile(id).then((profil)=> {
@@ -485,8 +497,8 @@ switch(event.message.text.toLowerCase()) {
 /////// SERVICE BOT DENGAN PIHAK KETIGA/SCRAPE/API ------------
 
 if (event.message.text.toLowerCase() === "start") {
-   try{
         request(options1, function(error1, response1, body1) {
+          try{
             if (error1) throw new Error(error1);
             // answer fetched from susi
             var ans = (JSON.parse(body1)).answers[0].actions[0].expression;
@@ -499,20 +511,24 @@ if (event.message.text.toLowerCase() === "start") {
                   text: 'hey, you can typing word [ show menu ] to send carousel menu in this bot. Try it ...'
                 }]
               return client.replyMessage(event.replyToken, sampleQ);
-        });
+            
+          }catch(e){
+            console.log(e);
+          return err()
+          
+          }  
+          
+          });
      
-    }catch(e){
-         err();
-    }
-    
     
   
+//RECOM =========
     }else if(event.message.text.toLowerCase() === "recommendations"){
           request(server.recom,async function(er,req,bo){
         try{
         
           if (er) throw new Error(er);    
-            var body=await (JSON.parse(bo));
+            var body=await (JSON.parse(bo).splice(0,10));
             var carousel =await [];
             
             for (var i = 1; i <= 9; i++) {
@@ -520,9 +536,9 @@ if (event.message.text.toLowerCase() === "start") {
                 var img = await body[i].img;
                 var link = await body[i].link;
 
-                 if (title.length >= 49) {
-                      title = title.substring(0, 50);
-                      title = title + "...";
+                 if (title.length >= 53) {
+                      title = await title.substring(0, 54);
+                      title = await title + "...";
                   }
               
                   carousel[i] = {
@@ -555,7 +571,33 @@ if (event.message.text.toLowerCase() === "start") {
                     "altText": "ANIME RECOMMENDED",
                     "template": {
                         "type": "carousel",
-                        "columns": [carousel[1],carousel[2],carousel[3],carousel[4],carousel[5],carousel[6],carousel[7],carousel[8],carousel[9]],
+                        "columns": [carousel[1],carousel[2],carousel[3],carousel[4],carousel[5],
+                                    carousel[6],carousel[7],carousel[8],carousel[9],
+                                   {
+                                    "thumbnailImageUrl": "https://cdn.onlinewebfonts.com/svg/img_403004.png",
+                                    "imageBackgroundColor": "#B0BEC5",
+                                    "title": " ",
+                                    "text": " ",
+                                    "defaultAction": {
+                                            "type": "message",
+                                            "label": "CLICK HERE",
+                                            "text": "more recommendations"
+                                    },
+                                    "actions": [
+                                        {
+                                            "type": "message",
+                                            "label": "LOAD MORE",
+                                            "text": "more recommendations"
+                                        },
+                                        {
+                                            "type": "message",
+                                            "label":" ",
+                                            "text": " "
+                                        }
+                                    ]
+                                  }
+                                   
+                                   ],
                     "imageAspectRatio": "rectangle",
                     "imageSize": "cover"
                       }
@@ -564,10 +606,77 @@ if (event.message.text.toLowerCase() === "start") {
              return client.replyMessage(event.replyToken,recom);
             }catch(er){
             console.log(er)
-              err();
+              return err()
+            }
+          })
+  
+    }else if(event.message.text.toLowerCase() === "more recommendations"){
+          request(server.recom,async function(er,req,bo){
+        try{
+        
+          if (er) throw new Error(er);    
+            var body=await (JSON.parse(bo).splice(9,20));
+            var carousel =await [];
+            
+            for (var i = 1; i <= 10; i++) {
+                var title = await body[i].title;
+                var img = await body[i].img;
+                var link = await body[i].link;
+
+                 if (title.length >= 53) {
+                      title = await title.substring(0, 54);
+                      title = await title + "...";
+                  }
+              
+                  carousel[i] = {
+                          "thumbnailImageUrl": img,
+                          "imageBackgroundColor": "#FFFFFF",
+                          "title": "THE MOST WATCHED",
+                          "text": title,
+                          "defaultAction": {
+                                  "type": "uri",
+                                  "label": "DOWNLOAD NOW",
+                                  "uri": link
+                          },
+                          "actions": [
+                              {
+                                  "type": "uri",
+                                  "label": "DOWNLOAD NOW",
+                                  "uri": link
+                              },
+                              {
+                                  "type": "message",
+                                  "label":"RETURN TO MENU",
+                                  "text": "show menu"
+                              }
+                          ]
+                        };
+              }
+          
+            const more_recom = {
+                    "type": "template",
+                    "altText": "ANIME RECOMMENDED",
+                    "template": {
+                        "type": "carousel",
+                        "columns": [carousel[1],carousel[2],carousel[3],carousel[4],carousel[5],
+                                    carousel[6],carousel[7],carousel[8],carousel[9],carousel[10]],
+                    "imageAspectRatio": "rectangle",
+                    "imageSize": "cover"
+                      }
+                   }
+
+             return client.replyMessage(event.replyToken,more_recom);
+            }catch(er){
+            console.log(er)
+              return err()
             }
           })
         
+  
+//END RECOM =========  
+      
+//ANIME =========  
+      
     }else if(event.message.text.toLowerCase() === "latest anime today"){
       request(server.nime,async function(er1,req1,bo1){
         try{
@@ -587,8 +696,8 @@ if (event.message.text.toLowerCase() === "start") {
                       title = title + "...";
                   }
                  
-                  if (desc.length >= 49) {
-                      desc = desc.substring(0, 50);
+                  if (desc.length >= 53) {
+                      desc = desc.substring(0, 54);
                       desc = desc + "...";
                   }
 
@@ -622,7 +731,8 @@ if (event.message.text.toLowerCase() === "start") {
                     "altText": "BATCH ANIME",
                     "template": {
                         "type": "carousel",
-                        "columns": [carousel[1],carousel[2],carousel[3],carousel[4],carousel[5],carousel[6],carousel[7],carousel[8],carousel[9],
+                        "columns": [carousel[1],carousel[2],carousel[3],carousel[4],carousel[5],
+                                    carousel[6],carousel[7],carousel[8],carousel[9],
                                    {
                                     "thumbnailImageUrl": "https://cdn.onlinewebfonts.com/svg/img_403004.png",
                                     "imageBackgroundColor": "#B0BEC5",
@@ -658,10 +768,10 @@ if (event.message.text.toLowerCase() === "start") {
                            
             }catch(er1){
             console.log(er1)
-            err();
+            return err();
             }
           })       
-      
+    
     } else if(event.message.text.toLowerCase() === "more latest anime"){
       request(server.nime,function(er1,req1,bo1){
           if (er1) throw new Error(er1);    
@@ -679,8 +789,8 @@ if (event.message.text.toLowerCase() === "start") {
                       title = title + "...";
                   }
                  
-                  if (desc.length >= 49) {
-                      desc = desc.substring(0, 50);
+                  if (desc.length >= 53) {
+                      desc = desc.substring(0, 54);
                       desc = desc + "...";
                   }
                     
@@ -714,7 +824,8 @@ if (event.message.text.toLowerCase() === "start") {
                     "altText": "BATCH ANIME",
                     "template": {
                         "type": "carousel",
-                        "columns": [carousel[1],carousel[2],carousel[3],carousel[4],carousel[5],carousel[6],carousel[7],carousel[8],carousel[9],carousel[10]],
+                        "columns": [carousel[1],carousel[2],carousel[3],carousel[4],carousel[5],
+                                    carousel[6],carousel[7],carousel[8],carousel[9],carousel[10]],
                         "imageAspectRatio": "rectangle",
                         "imageSize": "cover"
                       }
@@ -723,20 +834,25 @@ if (event.message.text.toLowerCase() === "start") {
              return client.replyMessage(event.replyToken,more_latest);
             
             })
-      }else if(event.message.text.toLowerCase() === "coupon today"){
-        request(server.diskon,function(er1,req1,bo1){
+      
+//END ANIME =========  
+ 
+//FREE LEARN UDEMY =========  
+            
+    }else if(event.message.text.toLowerCase() === "coupon today"){
+        request(server.diskon,async function(er1,req1,bo1){
           if (er1) throw new Error(er1);    
-            var body= (JSON.parse(bo1).splice(0,11));
-            var carousel = [];
+            var body= await (JSON.parse(bo1).splice(0,11));
+            var carousel = await [];
             
           for (var i = 1; i <= 10; i++) {
-                var title = body[i].title;
-                var img =  body[i].img;
-                var coupon = body[i].coupon;
+                var title = await body[i].title;
+                var img =  await body[i].img;
+                var coupon = await body[i].coupon;
 
-                 if (title.length >= 49) {
-                      title = title.substring(0, 50);
-                      title = title + "...";
+                 if (title.length >= 53) {
+                      title = await title.substring(0, 54);
+                      title = await title + "...";
                   }
       
               carousel[i] = {
@@ -769,7 +885,8 @@ if (event.message.text.toLowerCase() === "start") {
                     "altText": "COUPON",
                     "template": {
                         "type": "carousel",
-                        "columns": [carousel[1],carousel[2],carousel[3],carousel[4],carousel[5],carousel[6],carousel[7],carousel[8],carousel[9],
+                        "columns": [carousel[1],carousel[2],carousel[3],carousel[4],carousel[5],
+                                    carousel[6],carousel[7],carousel[8],carousel[9],
                                    {
                                     "thumbnailImageUrl": "https://cdn.onlinewebfonts.com/svg/img_403004.png",
                                     "imageBackgroundColor": "#B0BEC5",
@@ -805,19 +922,19 @@ if (event.message.text.toLowerCase() === "start") {
       
       }else if(event.message.text.toLowerCase() === "more coupon"){
           
-       request(server.diskon,function(er1,req1,bo1){
+       request(server.diskon,async function(er1,req1,bo1){
           if (er1) throw new Error(er1);    
-            var body= (JSON.parse(bo1).splice(11,21));
+            var body= await (JSON.parse(bo1).splice(11,21));
             var carousel = [];
             
           for (var i = 1; i <= 10; i++) {
-                var title = body[i].title;
-                var img =  body[i].img;
-                var coupon = body[i].coupon;
+                var title = await body[i].title;
+                var img =  await body[i].img;
+                var coupon = await body[i].coupon;
 
-                 if (title.length >= 49) {
-                      title = title.substring(0, 50);
-                      title = title + "...";
+                 if (title.length >= 53) {
+                      title = await title.substring(0, 54);
+                      title = await title + "...";
                   }
       
               carousel[i] = {
@@ -850,7 +967,8 @@ if (event.message.text.toLowerCase() === "start") {
                     "altText": "COUPON",
                     "template": {
                         "type": "carousel",
-                        "columns": [carousel[1],carousel[2],carousel[3],carousel[4],carousel[5],carousel[6],carousel[7],carousel[8],carousel[9],carousel[10]],
+                        "columns": [carousel[1],carousel[2],carousel[3],carousel[4],carousel[5],
+                                    carousel[6],carousel[7],carousel[8],carousel[9],carousel[10]],
                         "imageAspectRatio": "rectangle",
                         "imageSize": "cover"
                       }
@@ -859,21 +977,25 @@ if (event.message.text.toLowerCase() === "start") {
              return client.replyMessage(event.replyToken,more_udemy);     
            
         })         
-          
+
+//END FREE LEARN UDEMY =========  
+
+//SMARTYBRO UDEMY =========  
+                   
     }else if(event.message.text.toLowerCase() === "smartybro today"){
-        request(server.free,function(er1,req1,bo1){
+        request(server.free,async function(er1,req1,bo1){
           if (er1) throw new Error(er1);    
-            var body= (JSON.parse(bo1).splice(0,11));
-            var carousel = [];
+            var body= await (JSON.parse(bo1).splice(0,11));
+            var carousel = await [];
             
           for (var i = 1; i <= 10; i++) {
-                var title = body[i].title;
-                var img =  body[i].img;
-                var coupon = body[i].coupon;
+                var title = await body[i].title;
+                var img =  await body[i].img;
+                var coupon = await body[i].coupon;
 
-                 if (title.length >= 49) {
-                      title = title.substring(0, 50);
-                      title = title + "...";
+                 if (title.length >= 53) {
+                      title = await title.substring(0, 54);
+                      title = await title + "...";
                   }
       
               carousel[i] = {
@@ -906,7 +1028,8 @@ if (event.message.text.toLowerCase() === "start") {
                     "altText": "COUPON",
                     "template": {
                         "type": "carousel",
-                        "columns": [carousel[1],carousel[2],carousel[3],carousel[4],carousel[5],carousel[6],carousel[7],carousel[8],carousel[9],
+                        "columns": [carousel[1],carousel[2],carousel[3],carousel[4],carousel[5],
+                                    carousel[6],carousel[7],carousel[8],carousel[9],
                                    {
                                     "thumbnailImageUrl": "https://cdn.onlinewebfonts.com/svg/img_403004.png",
                                     "imageBackgroundColor": "#B0BEC5",
@@ -946,19 +1069,19 @@ if (event.message.text.toLowerCase() === "start") {
       
       }else if(event.message.text.toLowerCase() === "more smartybro"){
           
-       request(server.free,function(er1,req1,bo1){
+       request(server.free,async function(er1,req1,bo1){
           if (er1) throw new Error(er1);    
-            var body= (JSON.parse(bo1).splice(11,21));
-            var carousel = [];
+            var body= await (JSON.parse(bo1).splice(11,21));
+            var carousel = await [];
             
           for (var i = 1; i <= 10; i++) {
-                var title = body[i].title;
-                var img =  body[i].img;
-                var coupon = body[i].coupon;
+                var title = await body[i].title;
+                var img =  await body[i].img;
+                var coupon = await body[i].coupon;
 
-                 if (title.length >= 49) {
-                      title = title.substring(0, 50);
-                      title = title + "...";
+                 if (title.length >= 53) {
+                      title = await title.substring(0, 54);
+                      title = await title + "...";
                   }
       
               carousel[i] = {
@@ -991,7 +1114,8 @@ if (event.message.text.toLowerCase() === "start") {
                     "altText": "COUPON",
                     "template": {
                         "type": "carousel",
-                        "columns": [carousel[1],carousel[2],carousel[3],carousel[4],carousel[5],carousel[6],carousel[7],carousel[8],carousel[9],carousel[10]],
+                        "columns": [carousel[1],carousel[2],carousel[3],carousel[4],carousel[5],
+                                    carousel[6],carousel[7],carousel[8],carousel[9],carousel[10]],
                         "imageAspectRatio": "rectangle",
                         "imageSize": "cover"
                       }
@@ -1000,8 +1124,82 @@ if (event.message.text.toLowerCase() === "start") {
              return client.replyMessage(event.replyToken,more_smartybro);     
            
         })      
-     
-      }else{
+
+//END SMARTYBRO UDEMY =========  
+  
+// EBOOK GOALKICKER =========  
+  
+    }else if(event.message.text.toLowerCase() === "latest ebook"){
+      request(server.ebook,async function(er1,req1,bo1){
+        try{
+          if (er1) throw new Error(er1);
+            var acak = await function getRandomInt(min, max) {
+                return Math.floor(Math.random() * (max - min + 1)) + min;
+            }
+            var body= await (JSON.parse(bo1).splice(acak(1,30),acak(31,48)).reverse())
+            var carousel = await [];
+          for (var i = 1; i <= 11; i++) {
+                var title = await body[i].title;
+                var img = await body[i].img;
+                var link = await body[i].link;
+
+                 if (title.length >= 53) {
+                      title = await title.substring(0, 54);
+                      title = await title + "...";
+                  }
+      
+              carousel[i] = {
+                          "thumbnailImageUrl": img,
+                          "imageBackgroundColor": "#FFFFFF",
+                          "title": "EBOOK REFERENCE",
+                          "text": title,
+                          "defaultAction": {
+                                  "type": "uri",
+                                  "label": "DETAILS",
+                                  "uri": link
+                          },
+                          "actions": [
+                              {
+                                  "type": "uri",
+                                  "label": "DETAILS",
+                                  "uri": link
+                              },
+                              {
+                                  "type": "message",
+                                  "label":"RETURN TO MENU",
+                                  "text": "show menu"
+                              }
+                          ]
+                        };
+              }
+
+            const latest_ebook = {
+                    "type": "template",
+                    "altText": "GOALKICKER",
+                    "template": {
+                        "type": "carousel",
+                        "columns": [carousel[1],carousel[2],carousel[3],carousel[4],carousel[5],
+                                    carousel[6],carousel[7],carousel[8],carousel[9],carousel[10]],
+                        "imageAspectRatio": "rectangle",
+                        "imageSize": "cover"
+                      }
+                   }
+
+            return client.replyMessage(event.replyToken,latest_ebook); 
+          
+            }catch(e){
+            console.log(e);
+              return err()
+            }
+        })
+
+// END EBOOK GOALKICKER =========  
+
+      
+
+// SERVICE SUSI.AI =========  
+            
+    }else{
         request(options1, async function(error1, response1, body1) {
         if (error1) throw new Error(error1);
           try {
@@ -1118,7 +1316,7 @@ if (event.message.text.toLowerCase() === "start") {
                     },
                     {
                         "type": "template",
-                        "altText": "Web Search", // (XX) gagal parsing websearch , search for dog tampil duckduckgo carousel. sama lokasi gagal
+                        "altText": "Web Search", // (XX) gagal parsing websearch , search for dog tampil duckduckgo carousel. sama lokasi gagal. ntar aja
                         "template": {
                             "type": "carousel",
                             "columns": [
@@ -1130,17 +1328,23 @@ if (event.message.text.toLowerCase() === "start") {
                     }
                 ]
                 return client.replyMessage(event.replyToken, answer);
-            }}catch(e){ // handle error undefined callback
-            err();
+            }
+            
+          }catch(e){ // handle error undefined callback
+              console.log(e);
+            return err()
           }
-        })
-        
+          
+        })      
     }
+  
+// END SERVICE SUSI.AI =========  
+      
 }
 
 
 // listen on port
 const port = process.env.PORT || 8080;
 app.listen(port, () => {
-    console.log(`listening on ${port}`);
+    console.log(`serve port ${port}`);
 });

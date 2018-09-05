@@ -10,7 +10,7 @@ var http = require('http');
 //anime
 const recom = {
     method: 'GET',
-    url: 'https://hasana.glitch.me/recom/more/2'
+    url: 'https://hasana.glitch.me/recom/more/4'
 }
 const nime = {
    method: 'GET',
@@ -44,12 +44,15 @@ const free_catagory = {
     url: 'https://hasana.glitch.me/free'
 }
 
-var get_ebook = (name) => {
-   const ebook = {
+var ebook = {
    method: 'GET',
-   url: 'https://hasana.glitch.me/ebook/'+name
+   url: 'https://hasana.glitch.me/ebook'
+   }
+
+var ebook_name = {
+   method: 'GET',
+   url: 'https://hasana.glitch.me/ebook/json/'
    } 
-}
 
 
-module.exports = {recom,nime,nime_katagori,diskon,diskon_catagory,free,free_catagory,get_ebook}
+module.exports = {recom,nime,nime_katagori,diskon,diskon_catagory,free,free_catagory,ebook,ebook_name}

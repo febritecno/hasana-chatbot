@@ -411,7 +411,7 @@ var err = () => {
     
   // event -> array, type -> property pada object. sample object: {type: 'message'}
   if (event.type !== 'message' || event.message.type !== 'text') {     
-        // ignore non-text-message event
+        // ignore non-text-message event, const bisa nampung array dan var tidak bisa karna tidak konsisten.
         //return Promise.resolve(null);
         // callback jika dikirim tidak tipe pesan
         const sticker = stickerAnswers();

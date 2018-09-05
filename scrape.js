@@ -2,11 +2,9 @@
 
 
 const express = require('express');
-
 var xray = require('x-ray');
 
 const app = express();
-
 var x = xray();
 
 
@@ -121,7 +119,6 @@ try {
       return data.pipe(respon);
     }
 
-
     var diskon = async (respon,num) => {
       const data = await x('https://udemycoupon.learnviral.com/','.coupon',[{
         title: 'h3.entry-title a', 
@@ -135,7 +132,8 @@ try {
       return data.pipe(respon);
     };
 
-    var diskon_katagori = async(respon,name_category,num) => {
+
+  var diskon_katagori = async(respon,name_category,num) => {
       var url = await 'https://udemycoupon.learnviral.com/coupon-category/'+name_category;
 
       const data = await x(url,'.box-c .status-publish',[{ // dalam select blok perhatikan atribut yang beda / atribut key untuk filter blok mana yang ingin di ambil misal statusnya ini maka yang di ambil yang berstatus publish. karna ada 2 data yg sama.
@@ -149,11 +147,11 @@ try {
          .stream()
 
       return data.pipe(respon);
-    }
+  }
 
 
-}catch(err){
-  console.log(err);
+}catch(e){
+  console.log(e);
 }
 
 module.exports = {nime,nime_katagori,recom,smartybro,smartybro_katagori,diskon,diskon_katagori,ebook,getpage};

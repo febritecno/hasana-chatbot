@@ -394,7 +394,7 @@ switch(event.message.text.toLowerCase()) {
             ],
                 "thumbnailImageUrl": "https://avatars2.githubusercontent.com/u/9696688?s=460&v=4",
                 "title": "Febrian Dwi Putra",
-                "text": "Someone who likes in front of a laptop all day for 24 hours"
+                "text": "Someone who likes in front of a laptop all day for 20 hours"
           }
         };
         return client.replyMessage(event.replyToken, febri);

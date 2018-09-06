@@ -1322,7 +1322,7 @@ if (event.message.text.toLowerCase() === "start") {
                               {
                                   "type": "uri",
                                   "label":"WEBSITE",
-                                  "uri": "http://goalkicker.com"
+                                  "uri": "https://goalkicker.com"
                               }
                           ]
                         };

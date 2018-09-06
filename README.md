@@ -55,8 +55,17 @@ https://hasana.glitch.me/ebook/json/:name_ebook
 
 https://hasana.glitch.me/ebook/download
 
+## top anime
 
-# demo > scan
+http://hasana.glitch.me/upcoming
+
+http://hasana.glitch.me/upcoming/more/:number
+
+# VIDEO PREVIEW
+
+https://www.youtube.com/watch?v=rDIU_0wB6WU
+
+# DEMO > scan now
 
 ![](https://cdn.glitch.com/c5a59a6d-d584-4da5-af22-51ba2b6a1779%2FUm3peEBCk2.png)
 

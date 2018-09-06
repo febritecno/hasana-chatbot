@@ -311,13 +311,13 @@ var err = () => {
                   "actions": [
                       {
                           "type": "message",
-                          "label": "UPCOMING ANIME",
-                          "text": "upcoming anime"
+                          "label": "LATEST ANIME",
+                          "text": "latest anime today"
                       },
                       {
                           "type": "message",
-                          "label": "LATEST ANIME",
-                          "text": "latest anime today"
+                          "label": "UPCOMING ANIME",
+                          "text": "upcoming anime"
                       },
                       {
                           "type": "message",
@@ -612,7 +612,7 @@ if (event.message.text.toLowerCase() === "start") {
             var body=await (JSON.parse(bo).splice(0,10));
             var carousel =await [];
             
-            for (var i = 1; i <= 9; i++) {
+            for (var i = 0; i <= 8; i++) {
                 var title = await body[i].title;
                 var img = await body[i].img;
                 var link = await body[i].link;
@@ -652,8 +652,8 @@ if (event.message.text.toLowerCase() === "start") {
                     "altText": "ANIME RECOMMENDED",
                     "template": {
                         "type": "carousel",
-                        "columns": [carousel[1],carousel[2],carousel[3],carousel[4],carousel[5],
-                                    carousel[6],carousel[7],carousel[8],carousel[9],
+                        "columns": [carousel[0],carousel[1],carousel[2],carousel[3],carousel[4],
+                                    carousel[5],carousel[6],carousel[7],carousel[8],
                                    {
                                     "thumbnailImageUrl": "https://cdn.onlinewebfonts.com/svg/img_403004.png",
                                     "imageBackgroundColor": "#B0BEC5",
@@ -696,7 +696,7 @@ if (event.message.text.toLowerCase() === "start") {
         try{
         
           if (er) throw new Error(er);    
-            var body=await (JSON.parse(bo).splice(9,20));
+            var body=await (JSON.parse(bo).splice(8,20));
             var carousel =await [];
             
             for (var i = 1; i <= 10; i++) {

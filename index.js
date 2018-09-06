@@ -255,7 +255,16 @@ const replyText = (token, texts) => {
     texts.map((text) => ({ type: 'text', text }))
   );
 };
+
+
   
+cron({ timezone: 'Asia/Jakarta',on: '0 6 * * *' }, function () { //menambah cron job
+
+  replyText(event.replyToken,`smartybro today`);
+
+})  
+
+
 // fungsi ini untuk handle try{}..catch(e){} / ().then() .. ().catch() / ().resolve().. ().reject() callback error bot
 var err = () => {
   if (typeof(type) == 'undefined' || typeof(data) == 'undefined' || typeof(actions) == 'undefined'){
@@ -1119,10 +1128,6 @@ if (event.message.text.toLowerCase() === "start") {
                         "imageSize": "cover"
                       }
                    }
-             
-                cron({ timezone: 'Asia/Jakarta',on: '0 6 * * *' }, function () { //menambah cron job
-                client.replyMessage(event.replyToken,smartybro); 
-                })
           
              return client.replyMessage(event.replyToken,smartybro);     
            
@@ -1399,7 +1404,6 @@ if (event.message.text.toLowerCase() === "start") {
 // END SERVICE SUSI.AI =========  
       
 }
-
 
 // listen on port
 const port = process.env.PORT || 8080;

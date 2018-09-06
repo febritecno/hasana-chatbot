@@ -612,7 +612,7 @@ if (event.message.text.toLowerCase() === "start") {
             var body=await (JSON.parse(bo).splice(0,10));
             var carousel =await [];
             
-            for (var i = 0; i <= 8; i++) {
+            for (var i = 0; i <= 9; i++) {
                 var title = await body[i].title;
                 var img = await body[i].img;
                 var link = await body[i].link;
@@ -652,32 +652,9 @@ if (event.message.text.toLowerCase() === "start") {
                     "altText": "ANIME RECOMMENDED",
                     "template": {
                         "type": "carousel",
-                        "columns": [carousel[0],carousel[1],carousel[2],carousel[3],carousel[4],
-                                    carousel[5],carousel[6],carousel[7],carousel[8],
-                                   {
-                                    "thumbnailImageUrl": "https://cdn.onlinewebfonts.com/svg/img_403004.png",
-                                    "imageBackgroundColor": "#B0BEC5",
-                                    "title": " ",
-                                    "text": " ",
-                                    "defaultAction": {
-                                            "type": "message",
-                                            "label": "CLICK HERE",
-                                            "text": "more recommendations"
-                                    },
-                                    "actions": [
-                                        {
-                                            "type": "message",
-                                            "label": "LOAD MORE",
-                                            "text": "more recommendations"
-                                        },
-                                        {
-                                            "type": "message",
-                                            "label":" ",
-                                            "text": " "
-                                        }
-                                    ]
-                                  }
-                                   
+                        "columns": [
+                                    carousel[0],carousel[1],carousel[2],carousel[3],carousel[4],
+                                    carousel[5],carousel[6],carousel[7],carousel[8],carousel[9]
                                    ],
                     "imageAspectRatio": "rectangle",
                     "imageSize": "cover"
@@ -690,69 +667,6 @@ if (event.message.text.toLowerCase() === "start") {
               return err()
             }
           })
-  
-    }else if(event.message.text.toLowerCase() === "more recommendations"){
-          request(server.recom,async function(er,req,bo){
-        try{
-        
-          if (er) throw new Error(er);    
-            var body=await (JSON.parse(bo).splice(8,20));
-            var carousel =await [];
-            
-            for (var i = 1; i <= 10; i++) {
-                var title = await body[i].title;
-                var img = await body[i].img;
-                var link = await body[i].link;
-
-                 if (title.length >= 53) {
-                      title = await title.substring(0, 54);
-                      title = await title + "...";
-                  }
-              
-                  carousel[i] = {
-                          "thumbnailImageUrl": img,
-                          "imageBackgroundColor": "#FFFFFF",
-                          "title": "THE MOST WATCHED",
-                          "text": title,
-                          "defaultAction": {
-                                  "type": "uri",
-                                  "label": "DOWNLOAD NOW",
-                                  "uri": link
-                          },
-                          "actions": [
-                              {
-                                  "type": "uri",
-                                  "label": "DOWNLOAD NOW",
-                                  "uri": link
-                              },
-                              {
-                                  "type": "message",
-                                  "label":"RETURN TO MENU",
-                                  "text": "show menu"
-                              }
-                          ]
-                        };
-              }
-          
-            const more_recom = {
-                    "type": "template",
-                    "altText": "ANIME RECOMMENDED",
-                    "template": {
-                        "type": "carousel",
-                        "columns": [carousel[1],carousel[2],carousel[3],carousel[4],carousel[5],
-                                    carousel[6],carousel[7],carousel[8],carousel[9],carousel[10]],
-                    "imageAspectRatio": "rectangle",
-                    "imageSize": "cover"
-                      }
-                   }
-
-             return client.replyMessage(event.replyToken,more_recom);
-            }catch(er){
-            console.log(er)
-              return err()
-            }
-          })
-        
   
 //END RECOM =========  
       

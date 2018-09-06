@@ -13,7 +13,7 @@ var http = require('http');
 //anime
 const recom = {
     method: 'GET',
-    url: 'https://hasana.glitch.me/recom/more/4'
+    url: 'https://hasana.glitch.me/recom/more/2'
 }
 const nime = {
    method: 'GET',

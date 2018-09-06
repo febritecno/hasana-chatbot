@@ -5,11 +5,41 @@ const express = require('express');
 var xray = require('x-ray');
 
 const app = express();
-var x = xray();
+var x = xray({
+  filters: {
+    trim: function (value) {
+      return typeof value === 'string' ? value.trim() : value
+    },
+    reverse: function (value) {
+      return typeof value === 'string' ? value.split('').reverse().join('') : value
+    },
+    slice: function (value, start , end) {
+      return typeof value === 'string' ? value.slice(start, end) : value
+    }
+  }
+});
 
 
 try {
+  
+  
+  var upcoming = async (respon,num) => {
+      const data = await x('https://myanimelist.net/topanime.php?type=upcoming','tr.ranking-list',[{
 
+        title: '.di-ib a.hoverinfo_trigger',
+        img: 'img@data-src', //langsung scrape tag bersangkutan. gk usah peduli dengan tag nama / atribut tag atasnya
+        data:'.information',
+        link: '.di-ib a.hoverinfo_trigger@href',
+
+      }])
+      .paginate('.pagination a.link-blue-box@href')
+      .limit(num)
+      .stream()
+
+      return data.pipe(respon);
+
+    };
+  
     var getpage = async(respon,name) => {
       var url = await 'https://goalkicker.com/'+name+'/';
       const data = await x(url,'body',[{
@@ -154,4 +184,9 @@ try {
   console.log(e);
 }
 
-module.exports = {nime,nime_katagori,recom,smartybro,smartybro_katagori,diskon,diskon_katagori,ebook,getpage};
+module.exports = {
+                  nime,nime_katagori,recom,upcoming,
+                  smartybro,smartybro_katagori,
+                  diskon,diskon_katagori,
+                  ebook,getpage
+                 };

@@ -117,6 +117,10 @@ app.use(c); //use cached middleware on router express
 
 //ROUTER ===================
 
+app.get('/upcoming',function (req, res) {
+  s.upcoming(res,1); // limit sesuai dengan jumlah item perhalaman
+})
+
 app.get('/nime',function (req, res) { //index drivenime
   s.nime(res,1); // limit sesuai dengan jumlah item perhalaman
 })
@@ -165,6 +169,7 @@ app.get('/ebook/json/:name',async function (req, res) { // getpage or detail pag
 })
 
 /// fungsi router untuk handle endpoint nambah jumlah item diload pada json
+addmore('/upcoming',s.upcoming); //new
 addmore('/recom',s.recom);
 addmore('/free',s.smartybro);
 addmore('/diskon',s.diskon);
@@ -306,6 +311,11 @@ var err = () => {
                   "actions": [
                       {
                           "type": "message",
+                          "label": "UPCOMING ANIME",
+                          "text": "upcoming anime"
+                      },
+                      {
+                          "type": "message",
                           "label": "LATEST ANIME",
                           "text": "latest anime today"
                       },
@@ -313,11 +323,6 @@ var err = () => {
                           "type": "message",
                           "label": "ANIME RECOMMENDED",
                           "text": "recommendations"
-                      },
-                      {
-                          "type": "message",
-                          "label":"ANIME CATEGORY",
-                          "text": "choose category anime"
                       }
                   ]
                 },
@@ -913,15 +918,180 @@ if (event.message.text.toLowerCase() === "start") {
       
 //END ANIME =========  
  
+      
+      
+//UPCOMING =========  
+      
+    }else if(event.message.text.toLowerCase() === "upcoming anime"){
+      request(server.upcoming,async function(er1,req1,bo1){
+        try{
+        
+          if (er1) throw new Error(er1);    
+            var body=await (JSON.parse(bo1).splice(0,11));
+            var carousel =await [];
+            //console.log(body);
+          for (var i = 0; i <= 8; i++) {
+                var title = await body[i].title;
+                var img = await body[i].img;
+                var desc = await body[i].data;
+                var link = await body[i].link;
+
+                 if (title.length >= 36) {
+                      title = title.substring(0, 37);
+                      title = title + "...";
+                  }
+                  if (desc.length >= 53) {
+                      desc = desc.substring(0, 54);
+                      desc = desc + "...";
+                  }
+
+              carousel[i] = {
+                          "thumbnailImageUrl": img,
+                          "imageBackgroundColor": "#FFFFFF",
+                          "title": title,
+                          "text": desc,
+                          "defaultAction": {
+                                  "type": "uri",
+                                  "label": "DETAILS",
+                                  "uri": link
+                          },
+                          "actions": [
+                              {
+                                  "type": "uri",
+                                  "label": "DETAILS",
+                                  "uri": link
+                              },
+                              {
+                                  "type": "uri",
+                                  "label":"WEBSITE",
+                                  "uri": "https://myanimelist.net/topanime.php?type=upcoming"
+                              }
+                          ]
+                        };
+              }
+
+            const anime = {
+                    "type": "template",
+                    "altText": "UPCOMING",
+                    "template": {
+                        "type": "carousel",
+                        "columns": [carousel[0],carousel[1],carousel[2],carousel[3],carousel[4],
+                                    carousel[5],carousel[6],carousel[7],carousel[8],
+                                   {
+                                    "thumbnailImageUrl": "https://cdn.onlinewebfonts.com/svg/img_403004.png",
+                                    "imageBackgroundColor": "#B0BEC5",
+                                    "title": " ",
+                                    "text": " ",
+                                    "defaultAction": {
+                                            "type": "message",
+                                            "label": "CLICK HERE",
+                                            "text": "more upcoming"
+                                    },
+                                    "actions": [
+                                        {
+                                            "type": "message",
+                                            "label": "LOAD MORE",
+                                            "text": "more upcoming"
+                                        },
+                                        {
+                                            "type": "message",
+                                            "label":" ",
+                                            "text": " "
+                                        }
+                                    ]
+                                  }
+                                   
+                                   ],
+                        "imageAspectRatio": "rectangle",
+                        "imageSize": "cover"
+                      }
+                   }
+
+        
+             return client.replyMessage(event.replyToken,anime);
+                           
+            }catch(er1){
+            console.log(er1)
+            return err();
+            }
+          })       
+    
+    } else if(event.message.text.toLowerCase() === "more upcoming"){
+      request(server.upcoming,function(er1,req1,bo1){
+          if (er1) throw new Error(er1);    
+            var body= (JSON.parse(bo1).splice(9,21));
+            var carousel = [];
+            
+          for (var i = 0; i <= 9; i++) {
+                var title = body[i].title;
+                var img =  body[i].img;
+                var desc = body[i].data;
+                var link = body[i].link;
+
+                 if (title.length >= 36) {
+                      title = title.substring(0, 37);
+                      title = title + "...";
+                  }
+            
+                if (desc.length >= 53) {
+                      desc = desc.substring(0, 54);
+                      desc = desc + "...";
+                  }
+                    
+              carousel[i] = {
+                          "thumbnailImageUrl": img,
+                          "imageBackgroundColor": "#FFFFFF",
+                          "title": title,
+                          "text": desc,
+                          "defaultAction": {
+                                  "type": "uri",
+                                  "label": "DETAILS",
+                                  "uri": link
+                          },
+                          "actions": [
+                              {
+                                  "type": "uri",
+                                  "label": "DETAILS",
+                                  "uri": link
+                              },
+                              {
+                                  "type": "uri",
+                                  "label":"WEBSITE",
+                                  "uri": "https://myanimelist.net/topanime.php?type=upcoming"
+                              }
+                          ]
+                        };
+              }
+
+            const more_upcoming = {
+                    "type": "template",
+                    "altText": "UPCOMING ANIME",
+                    "template": {
+                        "type": "carousel",
+                        "columns": [carousel[0],carousel[1],carousel[2],carousel[3],carousel[4],
+                                    carousel[5],carousel[6],carousel[7],carousel[8],carousel[9]],
+                        "imageAspectRatio": "rectangle",
+                        "imageSize": "cover"
+                      }
+                   }
+
+             return client.replyMessage(event.replyToken,more_upcoming);
+            
+            })
+      
+//END UPCOMING =========  
+       
+      
+
 //FREE LEARN UDEMY =========  
             
     }else if(event.message.text.toLowerCase() === "coupon today"){
         request(server.diskon,async function(er1,req1,bo1){
           if (er1) throw new Error(er1);    
-            var body= await (JSON.parse(bo1).splice(0,11));
+            var body= await (JSON.parse(bo1).splice(0,10));
             var carousel = await [];
             
-          for (var i = 1; i <= 10; i++) {
+          for (var i = 0; i <= 8; i++) {
                 var title = await body[i].title;
                 var img =  await body[i].img;
                 var coupon = await body[i].coupon;
@@ -961,8 +1131,8 @@ if (event.message.text.toLowerCase() === "start") {
                     "altText": "COUPON",
                     "template": {
                         "type": "carousel",
-                        "columns": [carousel[1],carousel[2],carousel[3],carousel[4],carousel[5],
-                                    carousel[6],carousel[7],carousel[8],carousel[9],
+                        "columns": [carousel[0],carousel[1],carousel[2],carousel[3],carousel[4],
+                                    carousel[5],carousel[6],carousel[7],carousel[8],
                                    {
                                     "thumbnailImageUrl": "https://cdn.onlinewebfonts.com/svg/img_403004.png",
                                     "imageBackgroundColor": "#B0BEC5",
@@ -1000,7 +1170,7 @@ if (event.message.text.toLowerCase() === "start") {
           
        request(server.diskon,async function(er1,req1,bo1){
           if (er1) throw new Error(er1);    
-            var body= await (JSON.parse(bo1).splice(11,21));
+            var body= await (JSON.parse(bo1).splice(8,20));
             var carousel = [];
             
           for (var i = 1; i <= 10; i++) {
@@ -1061,10 +1231,10 @@ if (event.message.text.toLowerCase() === "start") {
     }else if(event.message.text.toLowerCase() === "smartybro today"){
         request(server.free,async function(er1,req1,bo1){
           if (er1) throw new Error(er1);    
-            var body= await (JSON.parse(bo1).splice(0,11));
+            var body= await (JSON.parse(bo1).splice(0,10));
             var carousel = await [];
             
-          for (var i = 1; i <= 10; i++) {
+          for (var i = 0; i <= 8; i++) {
                 var title = await body[i].title;
                 var img =  await body[i].img;
                 var coupon = await body[i].coupon;
@@ -1104,8 +1274,8 @@ if (event.message.text.toLowerCase() === "start") {
                     "altText": "COUPON",
                     "template": {
                         "type": "carousel",
-                        "columns": [carousel[1],carousel[2],carousel[3],carousel[4],carousel[5],
-                                    carousel[6],carousel[7],carousel[8],carousel[9],
+                        "columns": [carousel[0],carousel[1],carousel[2],carousel[3],carousel[4],
+                                    carousel[5],carousel[6],carousel[7],carousel[8],
                                    {
                                     "thumbnailImageUrl": "https://cdn.onlinewebfonts.com/svg/img_403004.png",
                                     "imageBackgroundColor": "#B0BEC5",
@@ -1143,10 +1313,12 @@ if (event.message.text.toLowerCase() === "start") {
           
        request(server.free,async function(er1,req1,bo1){
           if (er1) throw new Error(er1);    
-            var body= await (JSON.parse(bo1).splice(11,21));
+            var body= await (JSON.parse(bo1).splice(8,20));
             var carousel = await [];
-            
-          for (var i = 1; i <= 10; i++) {
+
+// index terakhir sebelumnya  8 jadi dibuat 8 pada splicenya index 0 pd body dan untuk loop di mulai dari 1 jadi index awal dimulai dari angka 9
+
+         for (var i = 1; i <= 10; i++) { 
                 var title = await body[i].title;
                 var img =  await body[i].img;
                 var coupon = await body[i].coupon;
@@ -1234,9 +1406,9 @@ if (event.message.text.toLowerCase() === "start") {
                                   "uri": link
                               },
                               {
-                                  "type": "message",
-                                  "label":"RETURN TO MENU",
-                                  "text": "show menu"
+                                  "type": "uri",
+                                  "label":"WEBSITE",
+                                  "uri": "http://goalkicker.com"
                               }
                           ]
                         };

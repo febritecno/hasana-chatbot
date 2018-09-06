@@ -24,6 +24,11 @@ const nime_katagori = {
     url: 'https://hasana.glitch.me/nime'
 }
 
+const upcoming = {
+    method: 'GET',
+    url: 'https://hasana.glitch.me/upcoming'
+}
+
 
 //coupon ilearning
 const diskon = {
@@ -63,4 +68,9 @@ var ebook_name = {
    } 
 
 
-module.exports = {recom,nime,nime_katagori,diskon,diskon_catagory,free,free_catagory,ebook,ebook_name}
+module.exports = {
+                  recom,nime,nime_katagori,upcoming,
+                  diskon,diskon_catagory,
+                  free,free_catagory,
+                  ebook,ebook_name,
+                 }

@@ -51,7 +51,9 @@ https://hasana.glitch.me/free/:catagory
 ## free ebook from goalkicker.com
 https://hasana.glitch.me/ebook
 
-https://hasana.glitch.me/ebook/:name_ebook
+https://hasana.glitch.me/ebook/json/:name_ebook
+
+https://hasana.glitch.me/ebook/download
 
 
 # demo > scan

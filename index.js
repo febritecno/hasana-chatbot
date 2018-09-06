@@ -449,16 +449,16 @@ switch(event.message.text.toLowerCase()) {
             "actions": [
               {
                 "type": "uri",
-                "label": "FACEBOOK ACCOUNT",
+                "label": "FACEBOOK",
                 "uri": "https://www.facebook.com/febri.krn"
               },
               {
                 "type": "uri",
-                "label": "LINKEDIN ACCOUNT",
+                "label": "LINKEDIN",
                 "uri": "https://www.linkedin.com/in/febrian-dwi-putra-026446163"
               },
               { "type": "uri",
-                "label": "GITHUB ACCOUNT",
+                "label": "GITHUB",
                 "uri": "https://github.com/febritecno"
               }
             ],
@@ -578,7 +578,7 @@ if (event.message.text.toLowerCase() === "start") {
                 },
                 {
                   type: 'text',
-                  text: 'hey, you can typing word [ show menu ] to send carousel menu in this bot. Try it ...'
+                  text: 'hey, you can typing word [ show menu ] to send carousel menu in this bot. Try it ...  catatan'
                 }]
               return client.replyMessage(event.replyToken, sampleQ);
             
@@ -685,7 +685,7 @@ if (event.message.text.toLowerCase() === "start") {
         try{
         
           if (er) throw new Error(er);    
-            var body=await (JSON.parse(bo).splice(9,20));
+            var body=await (JSON.parse(bo).splice(11,21));
             var carousel =await [];
             
             for (var i = 1; i <= 10; i++) {

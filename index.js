@@ -49,7 +49,7 @@ app.post('/webhook', line.middleware(config), (req, res) => {
 
 
 setInterval(function() {
-        https.get(process.env.URL) || http.get(process.env.URL)
+        http.get('hasana.glitch.me')
     }, 600000); // server refresh every 10 minutes.
 
 
@@ -257,14 +257,19 @@ const replyText = (token, texts) => {
 };
 
 
-  
-cron({ timezone: 'Asia/Jakarta',on: '0 6 * * *' }, function () { //menambah cron job
-
+ /////////////// AUTO CRON JOB TASK 
+cron({ on: '0 6 * * *' }, function () { //menambah cron job
   replyText(event.replyToken,`smartybro today`);
+});  
 
-})  
+  
+cron({ on: '1 * * * *' }, function () { //menambah kirim stiker
+   const sticker = stickerAnswers();
+  return client.replyMessage(event.replyToken, sticker);
+})
 
-
+ ////////////// 
+  
 // fungsi ini untuk handle try{}..catch(e){} / ().then() .. ().catch() / ().resolve().. ().reject() callback error bot
 var err = () => {
   if (typeof(type) == 'undefined' || typeof(data) == 'undefined' || typeof(actions) == 'undefined'){
@@ -272,7 +277,8 @@ var err = () => {
       "type": "text",
       "text": "ouh, i'm don't know what your say. "
     };
-  return client.replyMessage(event.replyToken, [answer,stickerAnswers()]);
+  const sticker = stickerAnswers();
+  return client.replyMessage(event.replyToken, [answer,sticker]);
   }
 }
   
@@ -427,7 +433,7 @@ var err = () => {
         return client.replyMessage(event.replyToken, sticker);
     }
   
-  var options1 = {
+  var options1 = { // server request pada layanan ai susi
         method: 'GET',
         url: 'http://api.susi.ai/susi/chat.json',
         qs: {
@@ -437,7 +443,7 @@ var err = () => {
     };
   
   
-//// switch case handle static fitur non server -------------------------
+//// switch case ini menghandle static fitur / non server -------------------------
 switch(event.message.text.toLowerCase()) {
     
     case 'who febrian':
@@ -685,7 +691,7 @@ if (event.message.text.toLowerCase() === "start") {
         try{
         
           if (er) throw new Error(er);    
-            var body=await (JSON.parse(bo).splice(11,21));
+            var body=await (JSON.parse(bo).splice(9,20));
             var carousel =await [];
             
             for (var i = 1; i <= 10; i++) {

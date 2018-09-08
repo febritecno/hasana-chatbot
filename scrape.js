@@ -22,7 +22,6 @@ var x = xray({
 
 try {
   
-  
   var upcoming = async (respon,num) => {
       const data = await x('https://myanimelist.net/topanime.php?type=upcoming','tr.ranking-list',[{
 

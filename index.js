@@ -261,19 +261,6 @@ const replyText = (token, texts) => {
   );
 };
 
-
- /////////////// AUTO CRON JOB TASK 
-cron({ on: '0 6 * * *' }, function () { //menambah cron job
-  replyText(event.replyToken,`smartybro today`);
-});  
-
-  
-cron({ on: '1 * * * *' }, function () { //menambah kirim stiker
-   const sticker = stickerAnswers();
-  return client.replyMessage(event.replyToken, sticker);
-})
-
- ////////////// 
   
 // fungsi ini untuk handle try{}..catch(e){} / ().then() .. ().catch() / ().resolve().. ().reject() callback error bot
 var err = () => {
@@ -674,12 +661,10 @@ if (event.message.text.toLowerCase() === "start") {
       
     }else if(event.message.text.toLowerCase() === "latest anime today"){
       request(server.nime,async function(er1,req1,bo1){
-        try{
-        
+        try{ 
           if (er1) throw new Error(er1);    
-            var body=await (JSON.parse(bo1).splice(1,10));
+            var body=await (JSON.parse(bo1).splice(2,10));
             var carousel =await [];
-            
           for (var i = 1; i <= 9; i++) {
                 var title = await body[i].title;
                 var img = await body[i].img;

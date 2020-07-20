@@ -94,6 +94,3 @@ https://medium.com/@ariaseta/membuat-bot-line-cuman-20-menit-part-1-105b9839cc1c
 https://packagist.org/packages/hinaloe/laravel-line-notify
 
 https://packagist.org/packages/riczescaran/laravel-line-bot
-
-var uri = 'https://mozilla.org/?x=dwadwadawddawdaw dwad dwadwa dwad dwadaw dwadwadwa';
-var encoded = encodeURI(uri).replace(/%20/g, "-");
